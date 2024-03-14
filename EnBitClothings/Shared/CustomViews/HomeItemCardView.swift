@@ -20,7 +20,7 @@ struct HomeItemCardView:View {
     var body: some View{
         VStack(alignment: .leading){
             HStack(){
-                Text("A$ \(formatNumber(number: itemCard?.price ?? 0))")
+                Text("LKR \(formatNumber(number: itemCard?.price ?? 0))")
                     .font(.customFont(.RobotoBold, 16))
                     .bold()
                     .foregroundColor(Color.custom(._E9E9E9))
@@ -60,20 +60,42 @@ struct HomeItemCardView:View {
                     .frame(height: 120)
 //                    .padding(.bottom, 7)
             } else {
-                Image("GiftPlaceHolder")
+                Image("icon.redeem")
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 120)
+                    .frame(width:120,height: 120)
                     .padding(.horizontal, 22)
                     .padding(.bottom, 7)
                     .opacity(0.5)
             }
             
-//            Text(itemCard?.category?.categoryName ?? "")
-//                .font(.customFont(.RobotoMedium, 12))
-//                .foregroundColor(Color.custom(._B4B4B4))
-//                .padding(.leading, 8)
-//                .padding(.top, 5)
+            if itemCard?.categoryId == "0" {
+                Text("All")
+                    .font(.customFont(.RobotoMedium, 12))
+                    .foregroundColor(Color.custom(._B4B4B4))
+                    .padding(.leading, 8)
+            } else if itemCard?.categoryId == "1"  {
+                Text("Kids")
+                    .font(.customFont(.RobotoMedium, 12))
+                    .foregroundColor(Color.custom(._B4B4B4))
+                    .padding(.leading, 8)
+            } else if itemCard?.categoryId == "2"  {
+                Text("Ladies")
+                    .font(.customFont(.RobotoMedium, 12))
+                    .foregroundColor(Color.custom(._B4B4B4))
+                    .padding(.leading, 8)
+            } else if itemCard?.categoryId == "3"  {
+                Text("Gents")
+                    .font(.customFont(.RobotoMedium, 12))
+                    .foregroundColor(Color.custom(._B4B4B4))
+                    .padding(.leading, 8)
+            } else {
+                Text("Other")
+                    .font(.customFont(.RobotoMedium, 12))
+                    .foregroundColor(Color.custom(._B4B4B4))
+                    .padding(.leading, 8)
+            }
+
             
             Text(itemCard?.itemTitle ?? "")
                 .font(.customFont(.RobotoMedium, 14))

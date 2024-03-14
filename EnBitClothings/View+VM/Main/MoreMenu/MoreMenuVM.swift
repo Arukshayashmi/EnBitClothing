@@ -20,6 +20,7 @@ class MoreMenuVM:BaseVM {
     
     @Published var moreMenuButtons:[MoreMenuItem] = [
         MoreMenuItem(buttonTitle: "My Profile", buttonImageName:"icon.profile", destination: AnyView(MyProfileView())),
+        MoreMenuItem(buttonTitle: "Payment Method", buttonImageName:"icon.wallet", destination: AnyView(PaymentMethodsView())),
         MoreMenuItem(buttonTitle: "About Us", buttonImageName:"icon.info", destination: AnyView(AboutUsView())),
         MoreMenuItem(buttonTitle: "Contact Us", buttonImageName:"icon.contact", destination: AnyView(ContactUsView())),
         MoreMenuItem(buttonTitle: "Privacy Policy", buttonImageName:"icon.shield", destination: AnyView(PrivacyPolicyView())),

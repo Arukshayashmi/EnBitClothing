@@ -22,8 +22,7 @@ struct TabBarView: View {
                     FavouritesView(hideTabBar: $hideBar)
 
                 case .cart:
-//                    CalendarView(hideTabBar: $hideBar)
-                    AnyView(Text("cart"))
+                    CartView(hideTabBar: $hideBar)
 
                 case .more:
                     MoreMenuView(hideTabBar: $hideBar)

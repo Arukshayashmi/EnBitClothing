@@ -79,7 +79,7 @@ struct MoreMenuView: View {
                             .padding(.bottom, 42)
                                 
                         }
-                        .padding(.top,200)
+                        .padding(.top,180)
                         
                         
                     } // VStack
