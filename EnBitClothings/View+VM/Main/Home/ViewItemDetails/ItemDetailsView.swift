@@ -62,11 +62,40 @@ struct ItemDetailsView: View {
                             .cornerRadius(14)
                             .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
                         
-//                        Text(vm.clothItem?.category?.categoryName ?? "")
-//                            .font(.customFont(.RobotoMedium, 14))
-//                            .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
-//                            .padding(.top, 16)
-//                            .padding(.bottom, 4)
+                        
+                        if vm.clothItem?.categoryId == "0" {
+                            Text("All")
+                                .font(.customFont(.RobotoMedium, 14))
+                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
+                                .padding(.top, 16)
+                                .padding(.bottom, 4)
+                        } else if vm.clothItem?.categoryId == "1"  {
+                            Text("Kids")
+                                .font(.customFont(.RobotoMedium, 14))
+                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
+                                .padding(.top, 16)
+                                .padding(.bottom, 4)
+                        } else if vm.clothItem?.categoryId == "2"  {
+                            Text("Ladies")
+                                .font(.customFont(.RobotoMedium, 14))
+                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
+                                .padding(.top, 16)
+                                .padding(.bottom, 4)
+                        } else if vm.clothItem?.categoryId == "3"  {
+                            Text("Gents")
+                                .font(.customFont(.RobotoMedium, 14))
+                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
+                                .padding(.top, 16)
+                                .padding(.bottom, 4)
+                        } else {
+                            Text("Other")
+                                .font(.customFont(.RobotoMedium, 14))
+                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
+                                .padding(.top, 16)
+                                .padding(.bottom, 4)
+                        }
+                        
+                        
                         Text(vm.clothItem?.itemTitle ?? "")
                             .font(.customFont(.RobotoMedium, 16))
                             .padding(.horizontal, 16)
@@ -74,7 +103,7 @@ struct ItemDetailsView: View {
                             .padding(.leading, 16)
                             .padding(.bottom, 13)
                         HStack {
-                            CommenButton(buttonTitle: "Item This Item", buttonWidth: 271, isFilled: true) {
+                            CommenButton(buttonTitle: "Get This Item", buttonWidth: 271, isFilled: true) {
                                 vm.isActiveGenerateItemCardView = true
                             }
                             .padding(.leading, 16)
