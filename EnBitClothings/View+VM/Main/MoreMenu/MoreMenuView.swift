@@ -17,16 +17,17 @@ struct MoreMenuView: View {
     @State var selectedCategoryId:Int = 0
     @State var offset: CGFloat = 0
     @State var lastOffset: CGFloat = 0
+    
+    @State var navigationTitle:String = "More"
+
     var body: some View {
         ZStack{
             Color.custom(._1B1A2B)
                 .ignoresSafeArea()
             VStack {
+                NavigationBarWithRightButton(title: navigationTitle, imageName: "", isImage: true) {}
                 ScrollView {
                     VStack{
-                        Text("More")
-                            .foregroundColor(Color.custom(._FFFFFF))
-                            .padding(.bottom, 15)
                         VStack(spacing: 16){
                             ForEach(vm.moreMenuButtons){item in
                                 Button {
@@ -56,30 +57,7 @@ struct MoreMenuView: View {
                         } //: VStack
                         .padding(.bottom, 48)
                         .padding(.top, 16)
-                        Button {
-                            logoutAPiCall()
-                        } label: {
-                            HStack {
-                                Image("icon.logout")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 18)
-                                    .padding(.horizontal, 19)
-                                    .padding(.vertical, 15)
-                                    .foregroundColor(Color.custom(._F34770))
-                                Text("Logout")
-                                    .foregroundColor(Color.custom(._FFFFFF))
-                                    .font(.custom("Roboto-Medium", size: 14))
-                                    .padding(.vertical, 15)
-                                Spacer()
-                            }// HStack
-                            .frame(height: 48)
-                                .background(Color.custom(._FFFFFF).opacity(0.13))
-                            .cornerRadius(14)
-                            .padding(.bottom, 42)
-                                
-                        }
-                        .padding(.top,180)
+
                         
                         
                     } // VStack
@@ -112,6 +90,30 @@ struct MoreMenuView: View {
                     )
                     
                 } // Scroll View
+                Button {
+                    logoutAPiCall()
+                } label: {
+                    HStack {
+                        Image("icon.logout")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 18)
+                            .padding(.horizontal, 19)
+                            .padding(.vertical, 15)
+                            .foregroundColor(Color.custom(._F34770))
+                        Text("Logout")
+                            .foregroundColor(Color.custom(._FFFFFF))
+                            .font(.custom("Roboto-Medium", size: 14))
+                            .padding(.vertical, 15)
+                        Spacer()
+                    }// HStack
+                    .frame(height: 48)
+                        .background(Color.custom(._FFFFFF).opacity(0.13))
+                    .cornerRadius(14)
+                    .padding(.bottom, 42)
+                        
+                }
+                .padding(16)
             } // VStack
         .foregroundColor(Color.custom(._FFFFFF))
         .alert(isPresented: $vm.isShowAlert) {

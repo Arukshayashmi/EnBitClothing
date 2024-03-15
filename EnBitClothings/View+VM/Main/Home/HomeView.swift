@@ -24,9 +24,7 @@ struct HomeView: View {
                 .ignoresSafeArea()
             GeometryReader { geo in
                 VStack {
-                    NavigationBarWithRightButton(title: navigationTitle, imageName: "", isImage: true) {
-                        //
-                    }
+                    NavigationBarWithRightButton(title: navigationTitle, imageName: "", isImage: true) {}
                     
                     HStack (spacing: 16){
                         

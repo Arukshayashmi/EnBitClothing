@@ -7,6 +7,7 @@
 
 
 import Foundation
+import SwiftUI
 
 class HomeVM:BaseVM {
     @Published var searchText:String = ""
@@ -30,10 +31,11 @@ class HomeVM:BaseVM {
 
 extension HomeVM {
     func performCategoryData() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.ItemCategories = Dummy.category
-            self.ItemCards = Dummy.ItemData
-
+        withAnimation(.easeIn){
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.ItemCategories = Dummy.category
+                self.ItemCards = Dummy.ItemData
+            }
         }
     }
 }

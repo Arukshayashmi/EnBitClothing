@@ -60,14 +60,17 @@ struct HomeItemCardView:View {
                     .frame(height: 120)
 //                    .padding(.bottom, 7)
             } else {
-                Image("icon.redeem")
+                Image("Cloth_Placeholder")
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
-                    .frame(width:120,height: 120)
                     .padding(.horizontal, 22)
                     .padding(.bottom, 7)
                     .opacity(0.5)
+                    .foregroundColor(.white)
+
             }
+            
             
             if itemCard?.categoryId == "0" {
                 Text("All")
@@ -116,4 +119,8 @@ struct HomeItemCardView:View {
         }
         
     }
+}
+
+#Preview {
+    HomeView(hideTabBar: .constant(false))
 }

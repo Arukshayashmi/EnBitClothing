@@ -7,7 +7,7 @@
 
 
 import SwiftUI
-import Combine
+//import Combine
 
 struct CartView: View {
     @State var sheetVisible:CGFloat = UIScreen.screenHeight * 1.1
@@ -15,13 +15,16 @@ struct CartView: View {
     @Binding var hideTabBar: Bool
     @State var offset: CGFloat = 0
     @State var lastOffset: CGFloat = 0
+    
+    @State var navigationTitle:String = "Cart"
+
     var body: some View {
         ZStack{
             Color.custom(._1B1A2B)
                 .ignoresSafeArea()
             ZStack {
                 VStack {
-                    NavigationBarWithBackButton(title: "Cart")
+                    NavigationBarWithRightButton(title: navigationTitle, imageName: "", isImage: true) {}
                     ScrollView(showsIndicators: false) {
                             VStack(spacing: 10) {
                                 if !vm.cartItems.isEmpty{

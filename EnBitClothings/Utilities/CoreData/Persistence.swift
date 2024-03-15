@@ -13,7 +13,7 @@ class PersistenceController {
     
     private init() {}
     private lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "TxtaPrez")
+        let container = NSPersistentContainer(name: "EnbitClothings")
         container.loadPersistentStores(completionHandler: { _, error in
             _ = error.map { fatalError("Unresolved error \($0)") }
         })

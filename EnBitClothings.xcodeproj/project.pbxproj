@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		845DD3E22BA2BFFF0073E78F /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 845DD3E12BA2BFFF0073E78F /* PhoneNumberKit */; };
-		845DD3E42BA2BFFF0073E78F /* PhoneNumberKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 845DD3E32BA2BFFF0073E78F /* PhoneNumberKit-Dynamic */; };
-		845DD3E62BA2BFFF0073E78F /* PhoneNumberKit-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 845DD3E52BA2BFFF0073E78F /* PhoneNumberKit-Static */; };
 		845DD3ED2BA2C20A0073E78F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845DD3E82BA2C20A0073E78F /* ImagePicker.swift */; };
 		845DD3EE2BA2C20A0073E78F /* ImagePickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845DD3E92BA2C20A0073E78F /* ImagePickerButton.swift */; };
 		845DD3EF2BA2C20A0073E78F /* ImagePlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845DD3EA2BA2C20A0073E78F /* ImagePlaceholder.swift */; };
@@ -19,6 +16,8 @@
 		845DD4012BA2C6D70073E78F /* KDCountryPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 845DD4002BA2C6D70073E78F /* KDCountryPicker */; };
 		845DD4032BA2C6FE0073E78F /* DatePickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845DD4022BA2C6FE0073E78F /* DatePickerField.swift */; };
 		845DD4052BA2C8340073E78F /* DropDownField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845DD4042BA2C8340073E78F /* DropDownField.swift */; };
+		84D14F9B2BA42BB5006F8E53 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 84D14F9A2BA42BB5006F8E53 /* Alamofire */; };
+		84D14FA72BA42CA3006F8E53 /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 84D14FA62BA42CA3006F8E53 /* PhoneNumberKit */; };
 		84E425EA2BA1E4060057C72F /* EnBitClothingsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E425E92BA1E4060057C72F /* EnBitClothingsApp.swift */; };
 		84E425EC2BA1E4060057C72F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E425EB2BA1E4060057C72F /* ContentView.swift */; };
 		84E425EE2BA1E4070057C72F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84E425ED2BA1E4070057C72F /* Assets.xcassets */; };
@@ -29,8 +28,6 @@
 		84E426092BA1EE640057C72F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E426082BA1EE640057C72F /* Logger.swift */; };
 		84E4260C2BA1EEE30057C72F /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E4260B2BA1EEE30057C72F /* UIApplication+Extension.swift */; };
 		84E4260F2BA1EF960057C72F /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 84E4260E2BA1EF960057C72F /* SwiftyJSON */; };
-		84E426122BA1EFDD0057C72F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 84E426112BA1EFDD0057C72F /* Alamofire */; };
-		84E426142BA1EFDD0057C72F /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 84E426132BA1EFDD0057C72F /* AlamofireDynamic */; };
 		84E426172BA1F0490057C72F /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E426162BA1F0490057C72F /* Handlers.swift */; };
 		84E426192BA1F0F90057C72F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E426182BA1F0F90057C72F /* Models.swift */; };
 		84E4261B2BA1F15A0057C72F /* Localizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E4261A2BA1F15A0057C72F /* Localizing.swift */; };
@@ -121,6 +118,19 @@
 		84E6D97A2BA3137E00377EE4 /* PaymentSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E6D9792BA3137E00377EE4 /* PaymentSheet.swift */; };
 		84E6D97C2BA313AE00377EE4 /* CardDetailField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E6D97B2BA313AE00377EE4 /* CardDetailField.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		84D14F7A2BA42317006F8E53 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		845DD3E82BA2C20A0073E78F /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -234,14 +244,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84E426122BA1EFDD0057C72F /* Alamofire in Frameworks */,
-				84E426142BA1EFDD0057C72F /* AlamofireDynamic in Frameworks */,
+				84D14FA72BA42CA3006F8E53 /* PhoneNumberKit in Frameworks */,
+				84D14F9B2BA42BB5006F8E53 /* Alamofire in Frameworks */,
 				845DD4012BA2C6D70073E78F /* KDCountryPicker in Frameworks */,
-				845DD3E42BA2BFFF0073E78F /* PhoneNumberKit-Dynamic in Frameworks */,
 				845DD3FC2BA2C5B30073E78F /* SDWebImageSwiftUI in Frameworks */,
 				84E426672BA204990057C72F /* Regex in Frameworks */,
-				845DD3E22BA2BFFF0073E78F /* PhoneNumberKit in Frameworks */,
-				845DD3E62BA2BFFF0073E78F /* PhoneNumberKit-Static in Frameworks */,
 				84E4260F2BA1EF960057C72F /* SwiftyJSON in Frameworks */,
 				84E426062BA1EE220057C72F /* RappleProgressHUD in Frameworks */,
 			);
@@ -762,23 +769,23 @@
 				84E425E22BA1E4060057C72F /* Sources */,
 				84E425E32BA1E4060057C72F /* Frameworks */,
 				84E425E42BA1E4060057C72F /* Resources */,
+				84D14F7A2BA42317006F8E53 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				84D14FA92BA42CC8006F8E53 /* PBXTargetDependency */,
+				84D14F9D2BA42BF3006F8E53 /* PBXTargetDependency */,
 			);
 			name = EnBitClothings;
 			packageProductDependencies = (
 				84E426052BA1EE220057C72F /* RappleProgressHUD */,
 				84E4260E2BA1EF960057C72F /* SwiftyJSON */,
-				84E426112BA1EFDD0057C72F /* Alamofire */,
-				84E426132BA1EFDD0057C72F /* AlamofireDynamic */,
 				84E426662BA204990057C72F /* Regex */,
-				845DD3E12BA2BFFF0073E78F /* PhoneNumberKit */,
-				845DD3E32BA2BFFF0073E78F /* PhoneNumberKit-Dynamic */,
-				845DD3E52BA2BFFF0073E78F /* PhoneNumberKit-Static */,
 				845DD3FB2BA2C5B30073E78F /* SDWebImageSwiftUI */,
 				845DD4002BA2C6D70073E78F /* KDCountryPicker */,
+				84D14F9A2BA42BB5006F8E53 /* Alamofire */,
+				84D14FA62BA42CA3006F8E53 /* PhoneNumberKit */,
 			);
 			productName = EnBitClothings;
 			productReference = 84E425E62BA1E4060057C72F /* EnBitClothings.app */;
@@ -811,11 +818,11 @@
 			packageReferences = (
 				84E426042BA1EE220057C72F /* XCRemoteSwiftPackageReference "RappleProgressHUD" */,
 				84E4260D2BA1EF960057C72F /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
-				84E426102BA1EFDD0057C72F /* XCRemoteSwiftPackageReference "Alamofire" */,
 				84E426652BA204990057C72F /* XCRemoteSwiftPackageReference "Regex" */,
-				845DD3E02BA2BFFF0073E78F /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 				845DD3FA2BA2C5B30073E78F /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				845DD3FF2BA2C6D70073E78F /* XCRemoteSwiftPackageReference "KDCountryPicker" */,
+				84D14F992BA42BB5006F8E53 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				84D14FA52BA42CA3006F8E53 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 			);
 			productRefGroup = 84E425E72BA1E4060057C72F /* Products */;
 			projectDirPath = "";
@@ -949,6 +956,17 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		84D14F9D2BA42BF3006F8E53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 84D14F9C2BA42BF3006F8E53 /* Alamofire */;
+		};
+		84D14FA92BA42CC8006F8E53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 84D14FA82BA42CC8006F8E53 /* PhoneNumberKit */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		84E425F22BA1E4070057C72F /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1002,7 +1020,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1059,7 +1077,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1072,13 +1090,19 @@
 		84E425F52BA1E4070057C72F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EnBitClothings/Preview Content\"";
+				DEVELOPMENT_TEAM = 5R23NM6B64;
 				ENABLE_PREVIEWS = YES;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					AlamofireDynamic.framework,
+					"PhoneNumberKit-Dynamic.framework",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = EnbitClothings;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
@@ -1091,6 +1115,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=*]" = (
+					"PhoneNumberKit-Dynamic.framework",
+					AlamofireDynamic.framework,
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "dilshan-dev.EnBitClothings";
@@ -1108,13 +1136,19 @@
 		84E425F62BA1E4070057C72F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EnBitClothings/Preview Content\"";
+				DEVELOPMENT_TEAM = 5R23NM6B64;
 				ENABLE_PREVIEWS = YES;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"PhoneNumberKit-Dynamic.framework",
+					AlamofireDynamic.framework,
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = EnbitClothings;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
@@ -1127,6 +1161,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=*]" = (
+					"PhoneNumberKit-Dynamic.framework",
+					AlamofireDynamic.framework,
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "dilshan-dev.EnBitClothings";
@@ -1165,14 +1203,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		845DD3E02BA2BFFF0073E78F /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.7.9;
-			};
-		};
 		845DD3FA2BA2C5B30073E78F /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
@@ -1187,6 +1217,22 @@
 			requirement = {
 				branch = main;
 				kind = branch;
+			};
+		};
+		84D14F992BA42BB5006F8E53 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.0.0;
+			};
+		};
+		84D14FA52BA42CA3006F8E53 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.0.0;
 			};
 		};
 		84E426042BA1EE220057C72F /* XCRemoteSwiftPackageReference "RappleProgressHUD" */ = {
@@ -1205,14 +1251,6 @@
 				minimumVersion = 5.0.1;
 			};
 		};
-		84E426102BA1EFDD0057C72F /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.9.0;
-			};
-		};
 		84E426652BA204990057C72F /* XCRemoteSwiftPackageReference "Regex" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/crossroadlabs/Regex.git";
@@ -1224,21 +1262,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		845DD3E12BA2BFFF0073E78F /* PhoneNumberKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 845DD3E02BA2BFFF0073E78F /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
-			productName = PhoneNumberKit;
-		};
-		845DD3E32BA2BFFF0073E78F /* PhoneNumberKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 845DD3E02BA2BFFF0073E78F /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
-			productName = "PhoneNumberKit-Dynamic";
-		};
-		845DD3E52BA2BFFF0073E78F /* PhoneNumberKit-Static */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 845DD3E02BA2BFFF0073E78F /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
-			productName = "PhoneNumberKit-Static";
-		};
 		845DD3FB2BA2C5B30073E78F /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 845DD3FA2BA2C5B30073E78F /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
@@ -1249,6 +1272,26 @@
 			package = 845DD3FF2BA2C6D70073E78F /* XCRemoteSwiftPackageReference "KDCountryPicker" */;
 			productName = KDCountryPicker;
 		};
+		84D14F9A2BA42BB5006F8E53 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84D14F992BA42BB5006F8E53 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		84D14F9C2BA42BF3006F8E53 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84D14F992BA42BB5006F8E53 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		84D14FA62BA42CA3006F8E53 /* PhoneNumberKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84D14FA52BA42CA3006F8E53 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = PhoneNumberKit;
+		};
+		84D14FA82BA42CC8006F8E53 /* PhoneNumberKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84D14FA52BA42CA3006F8E53 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = PhoneNumberKit;
+		};
 		84E426052BA1EE220057C72F /* RappleProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 84E426042BA1EE220057C72F /* XCRemoteSwiftPackageReference "RappleProgressHUD" */;
@@ -1258,16 +1301,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 84E4260D2BA1EF960057C72F /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
-		};
-		84E426112BA1EFDD0057C72F /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 84E426102BA1EFDD0057C72F /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-		84E426132BA1EFDD0057C72F /* AlamofireDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 84E426102BA1EFDD0057C72F /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = AlamofireDynamic;
 		};
 		84E426662BA204990057C72F /* Regex */ = {
 			isa = XCSwiftPackageProductDependency;

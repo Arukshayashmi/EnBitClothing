@@ -15,6 +15,9 @@ struct FavouritesView: View {
     @Binding var hideTabBar: Bool
     @State var offset: CGFloat = 0
     @State var lastOffset: CGFloat = 0
+    
+    @State var navigationTitle:String = "Favourites"
+
     var body: some View {
         ZStack{
             Color.custom(._1B1A2B)
@@ -22,7 +25,7 @@ struct FavouritesView: View {
             GeometryReader { geo in
                 VStack {
                     // Navigation section
-                    NavigationBarWithBackButton(title: "Favourites")
+                    NavigationBarWithRightButton(title: navigationTitle, imageName: "", isImage: true) {}
                     
                     VStack{
                         if !vm.ItemCards.isEmpty {
