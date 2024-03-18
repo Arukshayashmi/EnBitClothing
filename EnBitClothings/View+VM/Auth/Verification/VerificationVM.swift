@@ -6,16 +6,14 @@
 //
 
 import Foundation
+import Alamofire
 
 class VerificationVM:BaseVM {
     @Published var email:String = ""
-    @Published var completeProfileAction:Bool = false
     @Published var otpText:String = ""
     
     @Published var user: User?
-    
-    
-    
+
     init(email: String) {
         self.email = email
     }
@@ -39,64 +37,71 @@ class VerificationVM:BaseVM {
 }
 
 
+//: MARK: -
+
 extension VerificationVM {
-    func proceedWithVerification(pinText : String, completion: @escaping (_ status: Bool) -> ()) {
-        
-        // : Check internet connection
+    func proceedWithVerification(pinText : String, completion: @escaping CompletionHandler) {
+        // Check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
+            completion(false, "Internet connection appears to be offline.")
             return
         }
+
+        // Prepare the endpoint
+        let endpoint = "/user/verify"
         
-//        AuthAPI.authGetEmailVerification(code: pinText, accept: ASP.shared.accept) { data, error in
-//            if error != nil {
-//                self.handleErrorAndShowAlert(error: error)
-//                self.alertTitle = "Incorrect Verification Code"
-//                completion(false)
-//                
-//                return
-//            }
-//            
-//            guard let user = data?.payload else {
-//                self.isShowAlert = true
-//                self.alertMessage = data?.message ?? ""
-//                return
-//            }
-//            
-//            PersistenceController.shared.updateUserData(with: user)
-//            print(PersistenceController.shared.loadUserData()?.accessToken)
-//            
-//            completion(true)
-//        }
-        
-    }
-    
-    func resendVerificationCode( completion : @escaping (_ status: Bool) -> ()){
-        
-        // : Check internet connection
-        guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
-            return
-        }
-        
-//        AuthAPI.authGetResendVerificationCode(accept: ASP.shared.accept) { data, error in
-//            if error != nil {
-//                self.handleErrorAndShowAlert(error: error)
-//                completion(false)
-//                
-//                return
-//                
-//            } else {
-//                self.isShowAlert = true
-//                self.alertTitle = .Success
-//                self.alertMessage = data?.message ?? ""
-//                
-//                completion(true)
-//            }
-//        }
+        // Prepare the data to be sent in the request body
+        let parameters: [String: Any] = [
+            "code": pinText
+        ]
+
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .post, parameters: parameters, success: { (response: UserResponse) in
+            guard let userModel = response.user else {
+                completion(false, "User Model Missing.")
+                return
+            }
+
+            //MARK: - LOCAL USER SAVE
+            PersistenceController.shared.saveUserData(with: userModel)
+            
+            iBSUserDefaults.localUser = userModel
+            
+            completion(true, "Verification successful.")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
 }
 
 
+//: MARK: -
+
+extension VerificationVM {
+    func resendVerificationCode( completion: @escaping CompletionHandler) {
+        // Check internet connection
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline.")
+            return
+        }
+
+        // Prepare the endpoint
+        let endpoint = "/user/resend-code"
+
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .get, encoding: URLEncoding.default, success: { (response: UserResponse) in
+            
+            completion(true, "Verification resend successful.")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
+    }
+}

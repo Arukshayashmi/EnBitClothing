@@ -17,9 +17,7 @@ struct VerificationView: View {
             Color.custom(._1B1A2B)
                 .ignoresSafeArea()
             VStack(alignment:.center){
-                NavigationBarWithBackButton(title: "Sign Up"){
-                    //
-                }
+                NavigationBarWithRightButton(title: "Sign Up", isImage: false, actionRightButton: {})
                 Text("Please enter your verification code")
                     .font(.custom("Roboto-Regular", size: 22))
                     .foregroundColor(Color.custom(._FFFFFF))
@@ -74,42 +72,33 @@ struct VerificationView: View {
             }
         } // : ZStack
         .navigationBarHidden(true)
-        .background(
-            Group {
-                NavigationLink(destination: CompleteProfileView(),isActive: $vm.completeProfileAction, label: {})
-            }
-        )
     }
+    
     func oTPVerification(){
         if !vm.checkOTP(){
-            print("OTP Validation Error !")
+            showErrorLogger(message: "OTP Validation Error !")
             return
         }
-//        self.startLoading()
-        vm.completeProfileAction = true
-
-        vm.proceedWithVerification(pinText: vm.otpText) { status in
+        self.startLoading()
+        vm.proceedWithVerification(pinText: vm.otpText) { status,_  in
             self.stopLoading()
-            
             if status{
-                vm.completeProfileAction = true
-                
-                print( "VerificationView :  \(vm.otpText) :  \(status)")
+                ViewRouter.shared.currentRoot = .completeProfile
+                showSuccessLogger(message: "VerificationView :  \(vm.otpText) :  \(status)")
             } else {
-                print("Matching OTP Error !")
+                showErrorLogger(message: "Matching OTP Error !")
             }
         }
     }
     
     func resendOTPText(){
-//        self.startLoading()
-       
-        vm.resendVerificationCode { status in
+        self.startLoading()
+        vm.resendVerificationCode { status,_  in
             self.stopLoading()
             if status{
-                print( "OTP Resend Success !")
+                showSuccessLogger(message: "OTP Resend Success !")
             } else {
-                print("OTP Resend Error !")
+                showErrorLogger(message: "OTP Resend Error !")
             }
         }
     }

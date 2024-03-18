@@ -136,7 +136,7 @@ struct MoreMenuView: View {
     func logoutAPiCall(){
         //MARK: - LOGOUT API CALL
 //        self.startLoading()
-        vm.proceedLogoutAPi { status in
+        vm.proceedLogoutAPi { status, _ in
             self.stopLoading()
             print(" ❌ User Logout success ! ❌ ")
         }

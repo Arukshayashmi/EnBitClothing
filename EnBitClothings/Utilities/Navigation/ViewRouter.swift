@@ -15,15 +15,9 @@ enum Roots {
     case signUp
     case signUpVerify
     case completeProfile
+    case signIn
     case userTabs
     case moreMenu
-    case signIn
-//    case licenseProfile
-//    case financialProfile
-    
-    
-    
-//    case notification
 }
 
 
@@ -34,23 +28,13 @@ public func IsAuthenticated() -> Bool {
 }
 
 public func EmailVerifiedAt() -> Bool {
-    return PersistenceController.shared.loadUserData()?.emailVerifiedAt != nil
+    return PersistenceController.shared.loadUserData()?.emailVerifyAt != nil
 }
 
-//public func IsProfileCompleted() -> Bool {
-//    return PersistenceController.shared.loadUserData()?.firstName != nil
-//}
-public func IsProfileCompleted1() -> Bool {
-//    return ((PersistenceController.shared.loadUserData()?.value(forKey: "isCompletedStep1") as! Bool))
-    
-    return ((PersistenceController.shared.loadUserData()?.isProfileCompleted) == true)
+public func IsProfileCompleted() -> Bool {
+    return PersistenceController.shared.loadUserData()?.firstName != nil
 }
 
-
-
-//public func IsSubscribed() -> Bool {
-//    return PersistenceController.shared.loadUserData()?.Subscription != nil
-//}
 
 class ViewRouter: ObservableObject {
     
@@ -61,42 +45,21 @@ class ViewRouter: ObservableObject {
     fileprivate init() {
         
         if IsAuthenticated() {
-            
             if EmailVerifiedAt() {
-                
-                if IsProfileCompleted1(){
-                    
-//                    if IsProfileCompleted2(){
-//                        
-//                        if IsProfileCompleted3(){
-//                            
-//                            currentRoot = .userTabs
-//                        }else{
-//                            currentRoot = .financialProfile
-//                        }
-//                    }else{
-//                        currentRoot = .licenseProfile
-//
-//                    }
+                if IsProfileCompleted(){
                     currentRoot = .userTabs
                 }else{
                     currentRoot = .completeProfile
                 }
-                
             } else {
                 currentRoot = .signUpVerify
-                
             }
-            
         } else {
             currentRoot = .initialScreen
-//            currentRoot = .userTabs
-
         }
     }
     
 }
-
 
 
 struct RootView: View {
@@ -123,9 +86,6 @@ struct RootView: View {
         }//:NavigationView
         .navigationBarHidden(true)
         .navigationViewStyle(StackNavigationViewStyle())
-        .onOpenURL { url in
-//            self.router.currentRoot = .signUp
-        }
     }
     
     func containedView(roots: Roots) -> AnyView {
@@ -144,26 +104,13 @@ struct RootView: View {
             return AnyView(TabBarView(vm: TabBarVM(selectedTab: .homeView)))
             
         case .moreMenu:
-//            return AnyView(MoreMenuView(hideTabBar: .constant(true)))
-            return AnyView(Text("MoreMenu"))
+            return AnyView(MoreMenuView(hideTabBar: .constant(true)))
 
-            
         case .signIn:
             return AnyView(SignInView())
             
         case .completeProfile:
             return AnyView(CompleteProfileView())
-//        case .licenseProfile:
-//            return AnyView(CompleteProfileView_3())
-//        case .financialProfile:
-//            return AnyView(CompleteProfileView_2())
-            
-//        case .redeemedGiftsView:
-//            return AnyView(ViewReceivedGiftsView())
-            
-//        case .notification:
-//            return AnyView(UserTabsView(vm: UserTabsVM(selectedTab: isNotificationCome ? .more : .leaderboard)))
-            
         }
     }
 }

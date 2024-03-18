@@ -1,5 +1,5 @@
 //
-//  NetworkRechability.swift
+//  Reachability.swift
 //  EnBitClothings
 //
 //  Created by Yashmi Aruksha on 2024-03-13.
@@ -9,8 +9,10 @@ import Foundation
 import SystemConfiguration
 
 public class Reachability {
+    //===================================================================================================
+    //functions for check internet avaiability before submiting the request / while prcessing the request
+    //===================================================================================================
     
-    // Functions for check internet avaiability before submiting the request / while prcessing the request
     class func isInternetAvailable() -> Bool {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
@@ -31,3 +33,4 @@ public class Reachability {
         return (isReachable && !needsConnection)
     }
 }
+

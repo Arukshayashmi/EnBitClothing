@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Alamofire
 
 class SignUpVM:BaseVM {
     @Published var email:String = ""
@@ -51,65 +52,44 @@ extension SignUpVM {
     }
 }
 
+
 extension SignUpVM {
-    //MARK: - SIGNIN FUNCATION
-    func proceedWithSignUp(email: String, password: String, completion: @escaping (_ status: Bool) -> ()) {
-        
-        // Check internet connection
+    func proceedWithSignUp(email: String, password: String, completion: @escaping CompletionHandler) {
+        // check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
+            completion(false, "Internet connection appears to be offline. ")
             return
         }
-        
-//        AuthAPI.authPostRegister(accept: ASP.shared.accept, deviceId: ASP.shared.deviceId, deviceType: ASP.shared.deviceType, email: email, password: password, passwordConfirmation: password, devicePushToken: iBSUserDefaults.getFCMToken(), token: iBSUserDefaults.getGiftToken()) { response, error in
-//            
-//            if error != nil {
-//                self.handleErrorResponse(error) { (status, statusCode, message) in
-//                    self.alertTitle = "Register error"
-//                    self.alertMessage = message
-//                    self.isShowAlert = true
-//                    
-//                    if (message) == "The email has already been taken." {
-//                        self.isEmailAlreadyExists = true
-//                        self.isShowAlert = true
-//                    }
-//                    
-//                    return
-//                }
-//                completion(false)
-//            }else{
-//                
-//                // Read access token from readable object
-//                guard let user = response?.payload else {
-//                    self.alertMessage =  "Type Missed Match"
-//                    self.alertTitle = .Error
-//                    self.isShowAlert  =  true
-//                    
-//                    completion(false)
-//                    return
-//                }
-//                
-//                print("❌ access token:  \(String(describing: user.accessToken))")
-//                
-//                iBSUserDefaults.removeGiftToken()
-//                
-//                guard let accessToken = user.accessToken else{ return }
-//                
-//                //MARK: - SET X ACCESS TOKEN
-//                AppConstant.setAccessToken(token: accessToken)
-//                
-//                //MARK: - LOCAL USER SAVE
-//                PersistenceController.shared.saveUserData(with: user)
-//                
-//                //MARK: Add access token to SwaggerAPIClient Custom headers
-//                AppConstant.addAccessTokenToSwaggerAPIClientcustomHeaders()
-//                
-//                self.showInfoLogger(message: "✅ access tocken: \(String(describing: PersistenceController.shared.accessToken))")
-//                
-//                completion(true)
-//            }
-//        }
+
+        // Prepare the endpoint
+        let endpoint = "/user/register"
+
+        // Prepare the data to be sent in the request body
+        let parameters: [String: Any] = [
+            "email": email,
+            "password": password
+        ]
+
+        AFWrapper.shared.request(endpoint, method: .post, parameters: parameters, success: { (response: UserResponse) in
+            guard let userModel = response.user else {
+                completion(false, "User Model Missing..")
+                return
+            }
+
+            //MARK: - LOCAL USER SAVE
+            PersistenceController.shared.saveUserData(with: userModel)
+            
+            iBSUserDefaults.localUser = userModel
+            
+            iBSUserDefaults.authToken = response.token!
+            
+            completion(true, "Registration Success..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
-    
 }

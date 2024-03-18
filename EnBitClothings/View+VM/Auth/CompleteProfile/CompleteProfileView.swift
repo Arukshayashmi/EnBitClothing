@@ -26,7 +26,7 @@ struct CompleteProfileView: View {
                 ScrollView(.vertical , showsIndicators: false) {
                     
                     //MARK: USER IMAGE
-                    ImagePlaceholder(urlString: vm.user?.avatarUrl, isSendItemView: false)
+                    ImagePlaceholder(urlString: iBSUserDefaults.localUser?.profilePic?.url, isSendItemView: false)
                         .overlay(ImagePickerButton(image: $vm.selectedImage, isCameraIcon: true, customPadding: 100, isSendItemView: false, isAddLicenesViewView: false))
                         .onChange(of: vm.selectedImage) { _ in
                           
@@ -97,7 +97,7 @@ extension CompleteProfileView{
     func logoutAPiCall(){
         //MARK: - LOGOUT API CALL
         self.startLoading()
-        vm.proceedLogoutAPi { status in
+        vm.proceedLogoutAPi { status, _ in
             self.stopLoading()
             if status{
                 ViewRouter.shared.currentRoot = .initialScreen
@@ -115,7 +115,8 @@ extension CompleteProfileView{
     func performUpdateProfileImage(){
         self.startLoading()
         
-        vm.performUpdateProfileImage() { success in
+        vm.performUpdateProfileImage() { success, _ in
+            
             self.stopLoading()
             
             if success {
@@ -134,7 +135,7 @@ extension CompleteProfileView{
         }
 //        self.startLoading()
         ViewRouter.shared.currentRoot = .userTabs
-        vm.proceedCompleteProfileAPI() { success in
+        vm.proceedCompleteProfileAPI() { success, _ in
             self.stopLoading()
             
             if success {

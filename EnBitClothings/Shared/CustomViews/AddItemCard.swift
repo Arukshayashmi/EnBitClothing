@@ -30,11 +30,14 @@ struct AddItemCard:View {
                     .padding(12)
 
             } else {
-                Image("icon.redeem")
+                Image("Cloth_Placeholder")
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 100,height: 100)
                     .padding(12)
+                    .opacity(0.5)
+                    .foregroundColor(.white)
             }
             VStack(alignment:.leading, spacing:0){
                 HStack {

@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 import SwiftUI
 import PhoneNumberKit
+import Alamofire
 
 class CompleteProfileVM:BaseVM {
-    //:CompleteProfileView_1
     @Published var selectedImage: UIImage? = nil
     @Published var firstName:String = ""
     @Published var lastName:String = ""
@@ -37,7 +37,7 @@ class CompleteProfileVM:BaseVM {
     @Published var fieldOfState: [String] = ["New South Wales", "Queensland", "South Australia", "Tasmania", "Victoria", "Western Australia", "Australian Capital Territory", "Northern Territory"]
     
     @Published var isNavLicenseDetailsView:Bool = false
-
+    
 }
 extension CompleteProfileVM {
     //MARK: - COMPLETE PROFILE VALIDATIONS
@@ -47,7 +47,7 @@ extension CompleteProfileVM {
             alertMessage = "Please Enter First Name"
             isShowAlert = true
             return false
-        
+            
         } else if lastName.isEmpty {
             alertTitle = .Error
             alertMessage = "Please Enter Last Name"
@@ -64,7 +64,7 @@ extension CompleteProfileVM {
         return true
     }
     
-
+    
     //MARK: - PHONE NUMBER VALIDATIONS
     func checkPhoneNumber() -> Bool {
         
@@ -86,142 +86,88 @@ extension CompleteProfileVM {
     }
 }
 
-
 extension CompleteProfileVM {
-    func performUpdateProfileImage(completion : @escaping (_ status: Bool) -> ()) {
-        self.startLoading()
-        
+    func performUpdateProfileImage(completion: @escaping CompletionHandler) {
         guard Reachability.isInternetAvailable() else {
-            self.showNoInternetAlert()
-            self.stopLoading()
+            completion(false, "Internet connection appears to be offline.")
             return
         }
         
         guard let selectedImage else {
-            self.stopLoading()
+            completion(false, "No image selected.")
             return
         }
         
-        guard let selectedImageURL = getSavedURL(image: selectedImage, name: "") else {
-            self.stopLoading()
-            return
-        }
+        let endpoint = "/user/photo-update"
         
-//        ProfileAPI.profilePostUpdateMyAvatar(accept: ASP.shared.accept, image: selectedImageURL) { response, error in
-//            
-//            guard error == nil else {
-//                self.alertMessage = "Failed Uploading Avatar Image!"
-//                self.isShowAlert = true
-//                self.stopLoading()
-//                return
-//            }
-//            
-//            self.isShowAlert = true
-//            self.alertMessage = "Image uploaded successfully."
-//            self.alertTitle = "Image Upload"
-//            
-//            guard let user = response?.payload else {
-//                self.isShowAlert = true
-//                self.alertMessage = response?.message ?? ""
-//                self.stopLoading()
-//                return
-//            }
-//            
-//            self.user = user
-//            self.stopLoading()
-//            
-//            //MARK: - LOCAL USER SAVE
-//            PersistenceController.shared.updateUserData(with: user)
-//            
-//            //MARK: Add access token to SwaggerAPIClient Custom headers
-//            AppConstant.addAccessTokenToSwaggerAPIClientcustomHeaders()
-//        }
+        AFWrapper.shared.uploadImage(endpoint, image: selectedImage, imageName: "file", progressCompletion: { progress in
+            print("Upload progress: \(progress)")
+        }, success: { (response: UserResponse) in
+            guard let userModel = response.user else {
+                completion(false, "User Model Missing.")
+                return
+            }
+            
+            //MARK: - LOCAL USER SAVE
+            PersistenceController.shared.updateUserData(with: userModel)
+            
+            iBSUserDefaults.localUser = userModel
+            
+            completion(true, "Image uploaded successfully.")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, "Failed uploading image: \(error.localizedDescription)")
+            }
+        })
     }
 }
 
-extension CompleteProfileVM {
-    func performUploadImage() {
-        self.startLoading()
-        
-        guard Reachability.isInternetAvailable() else {
-            self.showNoInternetAlert()
-            self.stopLoading()
-            return
-        }
-        
-        guard let selectedImage else {
-            self.stopLoading()
-            return
-        }
-        
-        guard let selectedImageURL = getSavedURL(image: selectedImage, name: "") else {
-            self.stopLoading()
-            return
-        }
-        
-//        ProfileAPI.profilePostUpdateMyAvatar(accept: ASP.shared.accept, image: selectedImageURL) { response, error in
-//            
-//            guard error == nil else {
-//                self.alertMessage = "Failed Uploading Image!"
-//                self.isShowAlert = true
-//                self.stopLoading()
-//                return
-//            }
-//            
-//            self.isShowAlert = true
-//            self.alertMessage = "Image uploaded successfully."
-//            self.alertTitle = "Image Upload"
-//            
-//            guard let user = response?.payload else {
-//                self.isShowAlert = true
-//                self.alertMessage = response?.message ?? ""
-//                self.stopLoading()
-//                return
-//            }
-//            self.user = user
-//            self.stopLoading()
-//        }
-    }
-}
+
+//MARK: - COMPLETE PROFILE FUNCATION
 
 extension CompleteProfileVM {
-    //MARK: - COMPLETE PROFILE 01 FUNCATION
-    
-    func proceedCompleteProfileAPI(completion : @escaping (_ status: Bool) -> ()){
-        
+    func proceedCompleteProfileAPI(completion : @escaping CompletionHandler) {
         // Check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
+            completion(false, "Internet connection appears to be offline.")
             return
         }
         
-//        ProfileAPI.profilePostUpdateProfileStep1(accept: ASP.shared.accept, firstName: firstName, lastName: lastName, phone: phoneNumber, countryCode: countryCode, dateOfBirth: selectedDateString, address: address, city: city, postCode: postCode, state: state)
-//        
-//        { data, error in
-//            
-//            if error != nil {
-//                self.handleErrorAndShowAlert(error: error)
-//                completion(false)
-//                return
-//            }
-//            
-//            guard let user = data?.payload else {
-//                self.isShowAlert = true
-//                self.alertMessage = data?.message ?? ""
-//                completion(false)
-//                return
-//            }
-//            
-//            PersistenceController.shared.updateUserData(with: user)
-//            
-//            AppConstant.addAccessTokenToSwaggerAPIClientcustomHeaders()
-//            print("contact no:- \(PersistenceController.shared.loadUserData()?.phone)")
-//            
-//            completion(true)
-//        }
+        // Prepare the endpoint
+        let endpoint = "/user/profile-complete"
         
+        // Prepare the data to be sent in the request body
+        let parameters: [String: Any] = [
+            "first_name": firstName,
+            "last_name": lastName,
+            "phone": contactNumber,
+            "dob": selectedDateString,
+            "adress": address,
+            "city": city,
+            "post_code": postCode
+        ]
+        
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .post, parameters: parameters, success: { (response: UserResponse) in
+            guard let userModel = response.user else {
+                completion(false, "User Model Missing.")
+                return
+            }
+            
+            //MARK: - LOCAL USER SAVE
+            PersistenceController.shared.updateUserData(with: userModel)
+            
+            iBSUserDefaults.localUser = userModel
+            
+            completion(true, "Complete Profile Success.")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
 }
-
-

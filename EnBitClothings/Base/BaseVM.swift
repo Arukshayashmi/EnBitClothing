@@ -21,7 +21,7 @@ class BaseVM: NSObject, ObservableObject, LoadingIndicatorDelegate {
 }
 
 extension BaseVM {
-    func handleErrorResponse(_ error: Error?, completion: CompletionHandler) {
+    func handleErrorResponse(_ error: Error?, completion: CompletionHandlerBaseVM) {
         if let errorResponse = error as? ErrorResponse {
             switch errorResponse {
             case .error(let statusCode, let data, let error):
@@ -123,18 +123,18 @@ extension BaseVM {
     }
 }
 
-extension BaseVM{
-    //MARK: - LOGOUT FUNCATION
-    func proceedLogoutAPi(completion: @escaping (_ status: Bool) -> ()) {
-        
-        // Check internet connection
-        guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
-            return
-        }
-        
-        
+//extension BaseVM{
+//    //MARK: - LOGOUT FUNCATION
+//    func proceedLogoutAPi(completion: @escaping (_ status: Bool) -> ()) {
+//        
+//        // Check internet connection
+//        guard Reachability.isInternetAvailable() else {
+//            showNoInternetAlert()
+//            completion(false)
+//            return
+//        }
+//        
+//        
 //        
 //        AuthAPI.authGetLogout(accept: ASP.shared.accept) { response, error in
 //            
@@ -148,7 +148,37 @@ extension BaseVM{
 //                PersistenceController.shared.deleteUserData()
 //            }
 //        }
+//        
+//    }
+//}
+
+
+extension BaseVM {
+    func proceedLogoutAPi(completion : @escaping CompletionHandler) {
+        // Check internet connection
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline.")
+            return
+        }
         
+        // Prepare the endpoint
+        let endpoint = "/user/logout"
+        
+        
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .get, encoding: URLEncoding.default, success: { (response: UserResponse) in
+            
+            //MARK: - LOCAL USER DELETE
+            PersistenceController.shared.deleteUserData()
+            
+            completion(true, "Logout Success.")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
 }
 

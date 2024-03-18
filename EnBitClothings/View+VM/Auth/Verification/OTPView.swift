@@ -9,22 +9,16 @@ import SwiftUI
 import Combine
 
 struct OTPView: View {
-    
     var slotCount: Int
-    
     @Binding var otpText: String
-   
     @FocusState private var isKeyboardShowing: Bool
-    
     
     var body: some View {
         
         HStack(spacing: 0) {
             ForEach(0..<slotCount, id: \.self) { index in
-                
                 ZStack {
                     if otpText.count > index {
-                        
                         let startIndex = otpText.startIndex
                         let charIndex = otpText.index(startIndex, offsetBy: index)
                         let charToSting = String(otpText[charIndex])
@@ -46,9 +40,6 @@ struct OTPView: View {
                                 .stroke(status ? Color.custom(._FFFFFF).opacity(0.13) : Color.custom(._FFFFFF).opacity(0.13), lineWidth: 0.5)
                         }
                     }
-                        
-                       
-                        
                 }
                 .frame(maxWidth: 68)
             }
@@ -60,7 +51,6 @@ struct OTPView: View {
                 .focused($isKeyboardShowing)
                 .keyboardType(.numberPad)
                 .textContentType(.oneTimeCode)
-               
         )
         //.contentShape(Rectangle())
         .onTapGesture {
@@ -77,7 +67,6 @@ struct OTPView: View {
 extension Binding where Value == String {
     func limit(_ length: Int) -> Self {
         if self.wrappedValue.count > length {
-            
             DispatchQueue.main.async {
                 self.wrappedValue = String(self.wrappedValue.prefix(length ))
             }

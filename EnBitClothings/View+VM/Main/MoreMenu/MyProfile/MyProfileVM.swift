@@ -127,13 +127,11 @@ extension MyProfileVM{
         self.email = user.email ?? ""
         self.firstName = user.firstName ?? ""
         self.lastName = user.lastName ?? ""
-//        extractCountryCode(from: user.phone ?? "")
-        self.imageUrl = user.avatarUrl ?? ""
-        self.dob = user.dateOfBirth ?? ""
-        self.address = user.address ?? ""
+        self.imageUrl = user.profilePic?.url ?? ""
+        self.dob = user.dob ?? ""
+        self.address = user.adress ?? ""
         self.city = user.city ?? ""
         self.postCode = user.postCode ?? ""
-        self.countryCode = user.countryCode ?? ""
         self.phoneNumber = user.phone ?? ""
        
         

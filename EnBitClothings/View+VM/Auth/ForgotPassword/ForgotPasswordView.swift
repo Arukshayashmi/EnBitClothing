@@ -63,7 +63,7 @@ struct ForgotPasswordView: View {
             return
         }
         self.startLoading()
-        vm.proceedWithResetPasswordRequest(email: vm.email) { status in
+        vm.proceedWithResetPasswordRequest(email: vm.email) { status, _ in
             self.stopLoading()
             if status {
                 vm.forgotPasswordSuccess = true

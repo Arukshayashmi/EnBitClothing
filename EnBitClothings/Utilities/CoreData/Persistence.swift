@@ -37,17 +37,12 @@ extension PersistenceController {
         let entity = LocalUserData.entity()
         let userData = LocalUserData(entity: entity, insertInto: context)
         
-        userData.uuid = user.uuid
         userData.firstName = user.firstName
         userData.lastName = user.lastName
-        //userData.bio = user.bio
         userData.email = user.email
-        userData.avatarUrl = user.avatarUrl
-        userData.accessToken = user.accessToken
-        userData.emailVerifiedAt = user.emailVerifiedAt
+        userData.avatarUrl = user.profilePic?.url
+        userData.emailVerifyAt = user.emailVerifyAt
         userData.phone = user.phone
-        userData.isProfileCompleted = user.isProfileCompleted ?? false
-
         
         do {
             try context.save()
@@ -81,35 +76,13 @@ extension PersistenceController {
         do {
             guard let userData = try context.fetch(fetchRequest).first else { return }
             
-            userData.uuid = user.uuid
             userData.firstName = user.firstName
             userData.lastName = user.lastName
-            userData.avatarUrl = user.avatarUrl
+            userData.avatarUrl = user.profilePic?.url
             userData.phone = user.phone
-            userData.emailVerifiedAt = user.emailVerifiedAt
-            userData.isProfileCompleted = user.isProfileCompleted ?? false
+            userData.emailVerifyAt = user.emailVerifyAt
 
            // userData.email = user.email
-           // userData.accessToken = user.accessToken
-            
-            do {
-                try context.save()
-            } catch let error {
-                print("Error: \(error)")
-            }
-        } catch let error {
-            print("Error: \(error)")
-        }
-    }
-    
-    func updateAccessToken(with token: String) {
-        let context = PersistenceController.shared.mainContext
-        let fetchRequest: NSFetchRequest<LocalUserData> = LocalUserData.fetchRequest()
-        
-        do {
-            guard let userData = try context.fetch(fetchRequest).first else { return }
-            
-            userData.accessToken = token
             
             do {
                 try context.save()
@@ -137,9 +110,5 @@ extension PersistenceController {
         } catch let error {
             print("Error: \(error)")
         }
-    }
-    
-    var accessToken: String? {
-        return loadUserData()?.accessToken
     }
 }

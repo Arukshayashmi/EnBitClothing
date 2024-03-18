@@ -87,33 +87,20 @@ struct SignInView: View {
             Group {
                 NavigationLink(destination: SignUpView(),isActive: $vm.signUpAction, label: {})
                 NavigationLink(destination: ForgotPasswordView(),isActive: $vm.forgotPasswordAction, label: {})
-//                NavigationLink(destination: VerificationView(vm: VerificationVM(email: vm.email)),isActive: $vm.verificationViewAction, label: {})
-//                NavigationLink(destination:TabBarView(vm: TabBarVM(selectedTab: .homeView)),isActive: $vm.homeViewAction, label: {})
             }
         )
     }
     private func signInApiCall(){
         if !vm.signInCheck(){
-            print("Sign In Error")
+            showErrorLogger(message: "Sign In Error")
             return
         }
-//        self.startLoading()
-        ViewRouter.shared.currentRoot = .userTabs
-
-        vm.proceedSignInApi(email: vm.email, password: vm.password) { success in
+        self.startLoading()
+        vm.proceedSignInApi(email: vm.email, password: vm.password) { success, _ in
             self.stopLoading()
             if success{
                 if EmailVerifiedAt() {
-                    if IsProfileCompleted1() {
-//                        if IsProfileCompleted2(){
-//                            if IsProfileCompleted3(){
-//                                ViewRouter.shared.currentRoot = .userTabs
-//                            }else{
-//                                ViewRouter.shared.currentRoot = .financialProfile
-//                            }
-//                        }else{
-//                            ViewRouter.shared.currentRoot = .licenseProfile
-//                        }
+                    if IsProfileCompleted() {
                         ViewRouter.shared.currentRoot = .userTabs
                     } else {
                         ViewRouter.shared.currentRoot = .completeProfile
@@ -121,8 +108,10 @@ struct SignInView: View {
                 } else {
                     ViewRouter.shared.currentRoot = .signUpVerify
                 }
+                iBSUserDefaults.isOnBoard = true
+                showSuccessLogger(message: "Sign In Success")
             } else {
-                print("Sign In Error")
+                showErrorLogger(message: "Sign In Error")
             }
         }
         

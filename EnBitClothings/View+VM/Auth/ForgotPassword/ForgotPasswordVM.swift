@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 class ForgotPasswordVM:BaseVM {
     @Published var email:String = ""
@@ -31,32 +32,35 @@ extension ForgotPasswordVM {
     }
 }
 
+
+//: MARK: - REGISTER FUNCTION
+
 extension ForgotPasswordVM {
-    func proceedWithResetPasswordRequest(email : String, completion : @escaping (_ status: Bool) -> ()) {
-        
+    func proceedWithResetPasswordRequest(email: String, completion: @escaping CompletionHandler) {
         // Check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
+            completion(false, "Internet connection appears to be offline.")
             return
         }
-        
-//        ForgotPasswordAPI.forgotpasswordPostResetPassword(accept: ASP.shared.accept, email: email) { response, error in
-//            
-//            if error != nil {
-//                self.handleErrorAndShowAlert(error: error)
-//                completion(false)
-//                return
-//            }
-//            
-//            guard (response?.payload) != nil else {
-//                self.isShowAlert = true
-//                self.alertMessage = response?.message ?? ""
-//                return
-//            }
-//            
-//            completion(true)
-//        }
+
+        // Prepare the endpoint
+        let endpoint = "/resetPassword"
+
+        // Prepare the data to be sent in the request body
+        let parameters: [String: Any] = [
+            "email": email
+        ]
+
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default, success: { (response: UserResponse) in
+            
+            completion(true, "Password Reset Success.")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
 }
-

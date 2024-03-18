@@ -56,7 +56,7 @@ struct ForgotPasswordSuccess: View {
     func ForgotPasswordSuccessApiCall(){
         self.startLoading()
         //MARK: - API CALL
-        vm.proceedWithResetPasswordRequest(email: email){ success in
+        vm.proceedWithResetPasswordRequest(email: email){ success, _ in
             self.stopLoading()
             if success {
                 print(email)

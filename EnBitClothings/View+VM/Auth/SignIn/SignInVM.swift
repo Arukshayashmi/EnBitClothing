@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 class SignInVM: BaseVM {
     @Published var email:String = ""
@@ -54,45 +55,55 @@ extension SignInVM {
     }
 }
 
+
 extension SignInVM {
-    func proceedSignInApi(email : String, password : String, completion : @escaping (_ status: Bool) -> ()){
-        
+    func proceedSignInApi(email: String, password: String, completion: @escaping CompletionHandler) {
         // Check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
+            completion(false, "Internet connection appears to be offline.")
             return
         }
-        
-//        AuthAPI.authPostLogin(accept: ASP.shared.accept, deviceId: ASP.shared.deviceId, deviceType: ASP.shared.deviceType, email: email, password: password) { data, error in
-//            if error != nil {
-//                self.handleErrorAndShowAlert(error: error)
-//                completion(false)
-//                return
-//            }
-//            
-//            guard let user = data?.payload else {
-//                self.isShowAlert = true
-//                self.alertMessage = data?.message ?? ""
-//                completion(false)
-//                return
-//            }
-//            
-//            //MARK: - LOCAL USER DELETE
-//            PersistenceController.shared.deleteUserData()
-//            
-//            //MARK: - LOCAL USER SAVE
-//            PersistenceController.shared.saveUserData(with: user)
-//            
-//            //MARK: Add access token to SwaggerAPIClient Custom headers
-//            AppConstant.addAccessTokenToSwaggerAPIClientcustomHeaders()
-//            
-//            self.showInfoLogger(message: "✅ FCM Tocken: \(String(describing: iBSUserDefaults.getFCMToken())) ✅")
-//            
-//            self.showInfoLogger(message: "✅ access tocken: \(String(describing: PersistenceController.shared.accessToken))")
-//            
-//            self.showInfoLogger(message: "Is User EmailVerifiedAt \( PersistenceController.shared.loadUserData()?.emailVerifiedAt != nil )")
-//            
+
+        // Prepare the endpoint
+        let endpoint = "/user/login"
+
+        // Prepare the data to be sent in the request body
+        let parameters: [String: Any] = [
+            "email": email,
+            "password": password
+        ]
+
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .post, parameters: parameters, success: { (response: UserResponse) in
+            guard let userModel = response.user else {
+                self.isShowAlert = true
+                self.alertTitle = "Error"
+                self.alertMessage = "Incorrect Email or Password"
+                completion(false, "User Model Missing..")
+                return
+            }
+
+            //MARK: - LOCAL USER DELETE
+            PersistenceController.shared.deleteUserData()
+            
+            //MARK: - LOCAL USER SAVE
+            PersistenceController.shared.saveUserData(with: userModel)
+            
+            iBSUserDefaults.localUser = userModel
+
+            iBSUserDefaults.authToken = response.token!
+            
+            completion(true, "Login Success.")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
+    }
+}
+
 //            if  PersistenceController.shared.loadUserData()?.emailVerifiedAt != nil {
 //                completion(true)
 //            } else {
@@ -102,7 +113,3 @@ extension SignInVM {
 //                self.isNotVerified = true
 //                completion(false)
 //            }
-//        }
-    }
-    
-}

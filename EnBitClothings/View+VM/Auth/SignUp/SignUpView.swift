@@ -5,7 +5,6 @@
 //  Created by Yashmi Aruksha on 2024-03-13.
 //
 
-import Foundation
 import SwiftUI
 
 struct SignUpView: View {
@@ -44,9 +43,6 @@ struct SignUpView: View {
                             
                         }
                         .padding(.top, 20)
-//                        SocialLogin()
-//                        .padding(.top, 20)
-//                        .padding(.bottom, 60)
                         Spacer()
                         HStack(spacing: 5){
                             Text("Already have an account?")
@@ -84,36 +80,30 @@ struct SignUpView: View {
             } // : GeometryReader
         } // : ZStack
         .navigationBarHidden(true)
-//        .background(
-//            Group {
-//                NavigationLink(destination: SignInView(),isActive: $vm.signInAction, label: {})
-//                NavigationLink(destination: VerificationView(vm: VerificationVM(email: vm.email)),isActive: $vm.verifyAccountAction, label: {})
-//            }
-//        )
         .onAppear{
             vm.email = ""
             vm.password = ""
         }
     }
+    
     func signUpApiCall(){
         //MARK: - VALIDATIONS
         if !vm.signUpCheck(){
-            print("Sign Up Error")
+            showErrorLogger(message: "Sign Up Error")
             return
         }
         
-//        self.startLoading()
-        ViewRouter.shared.currentRoot = .signUpVerify
-
+        self.startLoading()
         //MARK: - API CALL
-        vm.proceedWithSignUp(email: vm.email, password: vm.password){ success in
-
-            self.stopLoading()
-            //: SignupVerifyView
+        vm.proceedWithSignUp(email: vm.email, password: vm.password){ success, _ in
             if success{
+                iBSUserDefaults.isOnBoard = true
                 ViewRouter.shared.currentRoot = .signUpVerify
+                showSuccessLogger(message: "Register Success..")
+                stopLoading()
             } else {
-                print("Matching Email Error !")
+                showErrorLogger(message: "Matching Email Error !")
+                self.stopLoading()
             }
         }
     }

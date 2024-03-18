@@ -115,11 +115,10 @@ extension EditProfileVM{
         
         self.firstName = user.firstName ?? ""
         self.lastName = user.lastName ?? ""
-        self.dobValue = user.dateOfBirth ?? ""
-        self.address = user.address ?? ""
+        self.dobValue = user.dob ?? ""
+        self.address = user.adress ?? ""
         self.city = user.city ?? ""
         self.postCode = user.postCode ?? ""
-        self.countryCode = user.countryCode ?? ""
         self.phoneNumber = user.phone ?? ""
         
     }
