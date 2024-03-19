@@ -5,13 +5,10 @@
 //  Created by Yashmi Aruksha on 2024-03-14.
 //
 
-
-
 import SwiftUI
 
 struct FavouritesView: View {
     @StateObject var vm = FavouritesVM()
-    @State var page:Int = 1
     @Binding var hideTabBar: Bool
     @State var offset: CGFloat = 0
     @State var lastOffset: CGFloat = 0
@@ -37,13 +34,10 @@ struct FavouritesView: View {
                                             vm.selectedItemCard = card
                                             vm.isActiveDetailsView = true
                                         }, addToFavAction: {
-                                                AddOrRemoveFavorites(itemId:card._id ?? 0, favStatus: 1)
+                                                AddOrRemoveFavorites(itemId:card.id ?? "", favStatus: 1)
                                         }, removeFromFavAction: {
-                                            AddOrRemoveFavorites(itemId: card._id ?? 0, favStatus: 0)
+                                            AddOrRemoveFavorites(itemId: card.id ?? "", favStatus: 0)
                                         })
-                                        .onAppear {
-                                            paginationWithFavItemCards(itemCards: card)
-                                        }
                                     }
                                 }
                                 .overlay(
@@ -89,8 +83,7 @@ struct FavouritesView: View {
                 
                 .onAppear{
                     //API Call for get favourite clothItem cards
-                    self.getFavouriteItemCards(page: page)
-                    vm.performProfileListData()
+                    self.getFavouriteItemCards()
                 }
             } //: Geometry
         } //: ZStack
@@ -102,21 +95,11 @@ struct FavouritesView: View {
         )
     }
     
-    //MARK: - PAGINATION
-    func paginationWithFavItemCards(itemCards: Item){
-        if itemCards._id == self.vm.ItemCards.last?._id{
-            if vm.paginator?.currentPage ?? 0.0 < vm.paginator?.lastPage ?? 0.0{
-                let nextPage = (vm.paginator?.currentPage ?? 1) + 1
-                self.getFavouriteItemCards(page: Int(nextPage), isPaging: true)
-            }
-        }
-    }
-    
     
     //MARK: - GET ITEM CARDS API CALL
-    func getFavouriteItemCards(page:Int, perPage:Int = 10, isPaging:Bool = false){
-//        self.startLoading()
-        vm.processWithAllFavoriteItem(page: page, perPage: perPage, isPaging: isPaging) { success in
+    func getFavouriteItemCards(){
+        self.startLoading()
+        vm.processWithAllFavoriteItem() { success, _ in
             self.stopLoading()
             if success{
                 showSuccessLogger(message: "favourite item cards data get success !")
@@ -128,10 +111,10 @@ struct FavouritesView: View {
     
     
     //MARK: - ADD OR REMOVE FAVORITE API CALL.
-    func AddOrRemoveFavorites(itemId: Int, favStatus: Int){
+    func AddOrRemoveFavorites(itemId: String, favStatus: Int){
         self.startLoading()
-        vm.processWithFavoriteItems(itemId: itemId, favStatus: favStatus) { success in
-            getFavouriteItemCards(page: 1)
+        vm.processWithFavoriteItems(itemId: itemId, favStatus: favStatus) { success, _ in
+            getFavouriteItemCards()
             self.stopLoading()
             if success{
                 if favStatus == 1{

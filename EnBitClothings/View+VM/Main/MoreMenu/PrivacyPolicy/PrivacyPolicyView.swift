@@ -21,7 +21,7 @@ struct PrivacyPolicyView: View {
                 
                 ScrollView(showsIndicators:false) {
                     VStack(spacing:0){
-                        Text(vm.privacyUrl)
+                        Text(vm.privacy)
                             .font(.customFont(.RobotoMedium, 16))
                             .multilineTextAlignment(.leading)
                             .padding(.horizontal, 16)
@@ -38,17 +38,8 @@ struct PrivacyPolicyView: View {
             } //: VStack
             .foregroundColor(Color.custom(._FFFFFF))
             .padding(.horizontal, 16)
-            .onAppear{
-                loadPrivacyPolicy()
-            }
         } //: ZStack
         .navigationBarHidden(true)
-    }
-    private func loadPrivacyPolicy(){
-//        self.startLoading()
-        vm.loadPrivacyPolicySettings { status in
-            self.stopLoading()
-        }
     }
 }
 

@@ -112,3 +112,42 @@ extension PersistenceController {
         }
     }
 }
+
+
+extension PersistenceController {
+    @discardableResult
+    func saveCardData(with card: Card) -> CardDetails? {
+        let context = PersistenceController.shared.mainContext
+        
+        let entity = CardDetails.entity()
+        let cardData = CardDetails(entity: entity, insertInto: context)
+        
+        cardData.cardNumber = Int64(card.cardNumber ?? 0)
+        cardData.expMonth = Int32(card.expMonth ?? 0)
+        cardData.cvv = Int16(card.cvv ?? 0)
+        
+        do {
+            try context.save()
+            return cardData
+        } catch let error {
+            print("Error: \(error)")
+        }
+        
+        return nil
+    }
+    
+    func loadCardData() -> CardDetails? {
+        let context = PersistenceController.shared.mainContext
+        let fetchRequest: NSFetchRequest<CardDetails> = CardDetails.fetchRequest()
+        
+        do {
+            let result = try context.fetch(fetchRequest).first
+            return result
+        }
+        catch {
+            debugPrint(error)
+        }
+        
+        return nil
+    }
+}

@@ -5,14 +5,13 @@
 //  Created by Yashmi Aruksha on 2024-03-14.
 //
 
-
 import SwiftUI
 
 struct HomeView: View {
     @StateObject var vm = HomeVM()
     @Binding var hideTabBar: Bool
     
-    @State var selectedCategoryId:Int = 0
+    @State var selectedCategoryId:String = ""
     @State var offset: CGFloat = 0
     @State var lastOffset: CGFloat = 0
     
@@ -30,32 +29,14 @@ struct HomeView: View {
                         
                         //MARK: - SEARCH BAR
                         SearchBar(searchText: $vm.searchText, placeholder: "Start typing here", clearAction: {
-                            getItemCards(minPrice: vm.minPrice, maxPrice: vm.maxPrice, categoryId: selectedCategoryId == 0 ? "" : String(selectedCategoryId), q: vm.searchText, page:1)
+                            getItemCards(categoryId: selectedCategoryId == "" ? "" : String(selectedCategoryId), q: vm.searchText)
                         })
                         .onSubmit {
-                            getItemCards(minPrice: vm.minPrice, maxPrice: vm.maxPrice, categoryId: selectedCategoryId == 0 ? "" : String(selectedCategoryId), q: vm.searchText, page:1)
+                            getItemCards(categoryId: selectedCategoryId == "" ? "" : String(selectedCategoryId), q: vm.searchText)
                             print("search categoryId: \(selectedCategoryId)")
                             print("search q: \(vm.searchText)")
                         }
                         .submitLabel(.search)
-                        
-                        Button {
-                            vm.isActiveFilterView = true
-                        } label: {
-                            Image("icon.filter")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 22)
-                                .foregroundColor(Color.custom(._FFFFFF))
-                                .padding(13)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .strokeBorder(Color.custom(._FFFFFF).opacity(0.29))
-                                        .background(Color.custom(._FFFFFF).opacity(0.22))
-                                        .frame(height: 48)
-                                )
-                                .cornerRadius(12)
-                        }
                         
                     }// : HStack
                     ScrollView(showsIndicators: false) {
@@ -69,17 +50,17 @@ struct HomeView: View {
                                     .foregroundColor(Color.custom(._E2E2E2))
                                 ScrollView(.horizontal, showsIndicators: false){
                                     HStack{
-                                        CategoryButton(categoryName: "All", categoryId: 0, selectedCategoryId: $selectedCategoryId, action: {
-                                            selectedCategoryId = 0
+                                        CategoryButton(categoryName: "All", categoryId: "", selectedCategoryId: $selectedCategoryId, action: {
+                                            selectedCategoryId = ""
                                             print(selectedCategoryId)
-                                            getItemCards(minPrice: vm.minPrice, maxPrice: vm.maxPrice, categoryId: "", q: vm.searchText, page:1)
+                                            getItemCards(categoryId: "", q: vm.searchText)
                                         })
                                         
                                         ForEach(Array($vm.ItemCategories.enumerated()), id: \.offset) { index, $item in
-                                            CategoryButton(categoryName: item.categoryName ?? "", categoryId: item._id ?? 0, selectedCategoryId: $selectedCategoryId, action: {
-                                                selectedCategoryId = item._id ?? 0
+                                            CategoryButton(categoryName: item.category ?? "", categoryId: item.id ?? "", selectedCategoryId: $selectedCategoryId, action: {
+                                                selectedCategoryId = item.id ?? ""
                                                 print(selectedCategoryId)
-                                                getItemCards(minPrice: vm.minPrice, maxPrice: vm.maxPrice, categoryId: String(selectedCategoryId), q: vm.searchText, page:1)
+                                                getItemCards(categoryId: String(selectedCategoryId), q: vm.searchText)
                                             })
                                         }
                                     } // : HStack
@@ -90,26 +71,27 @@ struct HomeView: View {
                             
                             if !vm.ItemCards.isEmpty {
                                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 2)) {
+                                    
+                                    
                                     ForEach(Array(vm.ItemCards.enumerated()), id: \.offset) { index, card in
                                         HomeItemCardView(itemCard: card, isFav: card.isFavourite ?? false, viewAction: {
                                             vm.selectedItemCard = card
                                             vm.isActiveDetailsView = true
                                         }, addToFavAction: {
-                                                AddOrRemoveFavorites(itemId:card._id ?? 0, favStatus: 1)
+                                            AddOrRemoveFavorites(itemId:card.id ?? "", favStatus: 1)
                                         }, removeFromFavAction: {
-                                            AddOrRemoveFavorites(itemId: card._id ?? 0, favStatus: 0)
+                                            AddOrRemoveFavorites(itemId: card.id ?? "", favStatus: 0)
                                         })
-                                        .onAppear {
-                                            paginationWithItemCards(itemCards: card)
-                                        }
                                     }
+                                    
+                                    
                                 }
                             } else {
                                 //MARK: placeholder
                                 VStack {
                                     Spacer()
                                     Text("No data found")
-                                        .padding(.top, 120)
+                                        .padding(.top, UIScreen.screenHeight * 0.3)
                                     Spacer()
                                 }//:VStack
                             }
@@ -141,21 +123,19 @@ struct HomeView: View {
                             }
                         )
                     } //: Scroll view
-//                    .refreshable {
-//                        getItemCardCategories()
-//                        getItemCards(page: 1, isPaging: false)
-//                    }
+                    .refreshable {
+                        getCategories()
+                        getItemCards()
+                    }
                 } //: VStack
                 .padding(.horizontal, 16)
                 .foregroundColor(Color.custom(._FFFFFF))
                 .onAppear{
-                    
-                    self.getItemCardCategories()
+                    self.getCategories()
                     
                     //API Call for get clothItem cards
-                    self.getItemCards(minPrice: vm.minPrice, maxPrice: vm.maxPrice, categoryId: selectedCategoryId == 0 ? "" : String(selectedCategoryId), page: 1)
+                    self.getItemCards( categoryId: selectedCategoryId == "" ? "" : String(selectedCategoryId))
                     print(" count \(vm.ItemCards.count)")
-                    
                 }
                 .onChange(of: ViewRouter.shared.currentRoot) { _ in
                     //
@@ -167,37 +147,30 @@ struct HomeView: View {
         
         .background(
             Group {
-//                NavigationLink(destination: FavouritesView(), isActive: $vm.favouritesAction, label: {})
-
                 NavigationLink(destination: ItemDetailsView(vm: ItemDetailsVM(clothItem: vm.selectedItemCard)), isActive: $vm.isActiveDetailsView, label: {})
-                NavigationLink(destination: HomeFiltersView(leftNavigationButton:changeNavigationButton(), selectedMinPrice: $vm.minPrice, selectedMaxPrice: $vm.maxPrice), isActive: $vm.isActiveFilterView, label: {})
             }
         )
     }
     
-    //MARK: - PAGINATION
-    func paginationWithItemCards(itemCards: Item){
-        if itemCards._id == self.vm.ItemCards.last?._id{
-            if vm.paginator?.currentPage ?? 0.0 < vm.paginator?.lastPage ?? 0.0{
-                let nextPage = (vm.paginator?.currentPage ?? 1) + 1
-                self.getItemCards(page: Int(nextPage), isPaging: true)
+    
+    //MARK: - GET CATEGORIES API CALL
+    func getCategories(){
+        vm.processWithCategories() { success, _ in
+            if success{
+                showSuccessLogger(message: "category data get success !")
+            }else{
+                showErrorLogger(message:  "category data get Error !")
             }
         }
     }
     
     
-    //MARK: - GET CATEGORIES
-    func getItemCardCategories(){
-        vm.performCategoryData()
-    }
     
-    
-    
-    func getItemCards(minPrice:String = "", maxPrice:String = "", categoryId:String = "", q:String = "", page:Int, perPage:Int = 10, isPaging:Bool = false){
+    func getItemCards(categoryId:String = "", q:String = ""){
         //MARK: - GET ITEM CARDS API CALL
         if navigationTitle == "Home" {
-//            self.startLoading()
-            vm.processWithItemCards(minPrice: minPrice, maxPrice: maxPrice, categoryId: categoryId, q: q, page: page, perPage: perPage, isPaging: isPaging) { success in
+            self.startLoading()
+            vm.processWithItemCards(categoryId: categoryId, q: q) { success, _  in
                 self.stopLoading()
                 if success{
                     showSuccessLogger(message: "clothItem card data get success !")
@@ -210,28 +183,19 @@ struct HomeView: View {
     
     
     //MARK: - ADD OR REMOVE FAVORITE API CALL.
-    func AddOrRemoveFavorites(itemId: Int, favStatus: Int){
-//        self.startLoading()
-        vm.processWithFavoriteItems(itemId: itemId, favStatus: favStatus) { success in
-            self.stopLoading()
+    func AddOrRemoveFavorites(itemId: String, favStatus: Int){
+        self.startLoading()
+        vm.processWithFavoriteItems(itemId: itemId, favStatus: favStatus) { success, _ in
             if success{
                 if favStatus == 1{
                     showSuccessLogger(message: "add to favorites success !")
                 } else {
                     showSuccessLogger(message: "remove from favorites success !")
                 }
+                getItemCards()
             } else {
                 showErrorLogger(message:  "favorites function Error !")
             }
-        }
-    }
-    
-    
-    func changeNavigationButton() -> String{
-        if navigationTitle == "Home"{
-            return "xmark"
-        } else {
-            return "chevron.left"
         }
     }
     

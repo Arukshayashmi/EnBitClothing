@@ -22,12 +22,12 @@ struct MyProfileView: View {
                     .padding(.top, 1)
                 ScrollView(showsIndicators: false){
                     VStack(spacing:10){
-                        ImagePlaceholder(urlString: vm.imageUrl, isSendItemView: false)
+                        ImagePlaceholder(urlString: iBSUserDefaults.localUser?.profilePic?.url, isSendItemView: false)
                             .overlay{
                                 ImagePickerButton(image: $vm.selectedImage, isCameraIcon: false, customPadding: 0, isSendItemView: false, isAddLicenesViewView: false)
                             }
                             .onChange(of: vm.selectedImage) { _ in
-                                vm.performUpdateProfileImage()
+                                vm.performUpdateProfileImage{ success, _ in }
                             }
                             .padding(.top, 16)
                         
@@ -38,7 +38,7 @@ struct MyProfileView: View {
                         
                         ProfileDetailField(title: "Last Name", detail: vm.lastName)
                         
-                        ProfileDetailField(title: "Phone Number", detail: vm.phoneNumber == "" ? "" : "(\(vm.countryCode)) \(vm.phoneNumber)")
+                        ProfileDetailField(title: "Phone Number", detail: vm.phoneNumber == "" ? "" : "\(vm.countryCode)\(vm.phoneNumber)")
                         
                         ProfileDetailField(title: "Date of Birth", detail: vm.dob)
                         
@@ -64,8 +64,8 @@ struct MyProfileView: View {
             .padding(.horizontal, 16)
             .foregroundColor(Color.custom(._FFFFFF))
             .onAppear{
-//                self.startLoading()
-                vm.loadProfileDetails{ success in
+                self.startLoading()
+                vm.loadProfileDetails{ success, _ in
                     self.stopLoading()
                     if success{
                         print("✅ User data loading success")

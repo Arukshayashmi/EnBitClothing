@@ -19,7 +19,7 @@ struct ItemDetailsView: View {
                 .ignoresSafeArea()
             
             VStack(alignment:.leading){
-                NavigationBarWithBackButton(title: vm.clothItem?.itemTitle ?? "")
+                NavigationBarWithBackButton(title: vm.clothItem?.name ?? "")
                     .padding(.bottom, 20)
                 
                     VStack(alignment:.leading, spacing: 0){
@@ -48,7 +48,7 @@ struct ItemDetailsView: View {
 //                            .padding(.bottom, 18)
 //                        } // : ZStack
                         
-                        WebImage(url: URL(string: vm.clothItem?.imageUrl ?? ""))
+                        WebImage(url: URL(string: vm.clothItem?.images?.first?.url ?? ""))
                             .placeholder {
                                 Image("GiftPlaceHolder")
                                     .resizable()
@@ -62,44 +62,16 @@ struct ItemDetailsView: View {
                             .cornerRadius(14)
                             .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
                         
+                        Text(vm.clothItem?.category?.category ?? "")
+                            .font(.customFont(.RobotoMedium, 12))
+                            .foregroundColor(Color.custom(._B4B4B4))
+                            .padding(.leading, 8)
+                            .padding(.top, 5)
                         
-                        if vm.clothItem?.categoryId == "0" {
-                            Text("All")
-                                .font(.customFont(.RobotoMedium, 14))
-                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
-                                .padding(.top, 16)
-                                .padding(.bottom, 4)
-                        } else if vm.clothItem?.categoryId == "1"  {
-                            Text("Kids")
-                                .font(.customFont(.RobotoMedium, 14))
-                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
-                                .padding(.top, 16)
-                                .padding(.bottom, 4)
-                        } else if vm.clothItem?.categoryId == "2"  {
-                            Text("Ladies")
-                                .font(.customFont(.RobotoMedium, 14))
-                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
-                                .padding(.top, 16)
-                                .padding(.bottom, 4)
-                        } else if vm.clothItem?.categoryId == "3"  {
-                            Text("Gents")
-                                .font(.customFont(.RobotoMedium, 14))
-                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
-                                .padding(.top, 16)
-                                .padding(.bottom, 4)
-                        } else {
-                            Text("Other")
-                                .font(.customFont(.RobotoMedium, 14))
-                                .foregroundColor(Color.custom(._FFFFFF).opacity(0.5)).padding(.leading, 16)
-                                .padding(.top, 16)
-                                .padding(.bottom, 4)
-                        }
-                        
-                        
-                        Text(vm.clothItem?.itemTitle ?? "")
+                        Text(vm.clothItem?.name ?? "")
                             .font(.customFont(.RobotoMedium, 16))
                             .padding(.horizontal, 16)
-                        Text("A$ \(formatNumber(number: vm.clothItem?.price ?? 0))")
+                        Text("LKR \(formatNumber(number: Double(vm.clothItem?.price ?? 0)))")
                             .padding(.leading, 16)
                             .padding(.bottom, 13)
                         HStack {
@@ -111,10 +83,10 @@ struct ItemDetailsView: View {
                             Button {
                                 if isFav == false {
                                     isFav = true
-                                    AddOrRemoveFavorites(itemId: vm.clothItem?._id ?? 0, favStatus: 1)
+                                    AddOrRemoveFavorites(itemId: vm.clothItem?.id ?? "", favStatus: 1)
                                 } else {
                                     isFav = false
-                                    AddOrRemoveFavorites(itemId: vm.clothItem?._id ?? 0, favStatus: 0)
+                                    AddOrRemoveFavorites(itemId: vm.clothItem?.id ?? "", favStatus: 0)
                                 }
                                 
                             } label: {
@@ -140,7 +112,7 @@ struct ItemDetailsView: View {
                         Text("Description")
                             .font(.customFont(.RobotoMedium, 14))
                             .padding(.bottom, 16)
-                        Text(vm.clothItem?._description ?? "")
+                        Text(vm.clothItem?.description ?? "")
                             .font(.customFont(.RobotoRegular, 12))
                             .padding(.bottom, 10)
                             .foregroundColor(Color.custom(._B4B4B4))
@@ -156,17 +128,12 @@ struct ItemDetailsView: View {
             }
         } // : ZStack
         .navigationBarHidden(true)
-//        .background(
-//            Group {
-//                NavigationLink(destination: GenerateGiftCardView(vm: GenerateGiftCardVM(clothItem: vm.clothItem)),isActive: $vm.isActiveGenerateGiftCardView, label: {})
-//            }
-//        )
     }
     
     //MARK: - ADD OR REMOVE FAVORITE API CALL.
-    func AddOrRemoveFavorites(itemId: Int, favStatus: Int){
+    func AddOrRemoveFavorites(itemId: String, favStatus: Int){
         self.startLoading()
-        vm.processWithFavoriteItems(itemId: itemId, favStatus: favStatus) { success in
+        vm.processWithFavoriteItems(itemId: itemId, favStatus: favStatus) { success, _ in
             self.stopLoading()
             if success{
                 if favStatus == 1{
@@ -183,5 +150,5 @@ struct ItemDetailsView: View {
 }
 
 #Preview {
-    ItemDetailsView(vm: ItemDetailsVM(clothItem: Item?.none))
+    ItemDetailsView(vm: ItemDetailsVM(clothItem: Product?.none))
 }

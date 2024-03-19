@@ -116,9 +116,8 @@ final class AFWrapper {
     }
 }
 
-
+// MARK: - FOR IMAGE UPLOAD
 extension AFWrapper {
-    
     func uploadImage<T: Decodable>(
         _ endpoint: String,
         image: UIImage,
@@ -157,7 +156,6 @@ extension AFWrapper {
         .responseData { response in
             switch response.result {
             case .success(let data):
-//                success(data)
                 self.decode(data: data, success: success, failure: failure)
             case .failure(let error):
                 if let data = response.data, let decodingError = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {

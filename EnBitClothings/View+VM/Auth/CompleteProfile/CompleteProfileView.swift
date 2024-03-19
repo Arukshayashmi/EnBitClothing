@@ -29,7 +29,6 @@ struct CompleteProfileView: View {
                     ImagePlaceholder(urlString: iBSUserDefaults.localUser?.profilePic?.url, isSendItemView: false)
                         .overlay(ImagePickerButton(image: $vm.selectedImage, isCameraIcon: true, customPadding: 100, isSendItemView: false, isAddLicenesViewView: false))
                         .onChange(of: vm.selectedImage) { _ in
-                          
                             performUpdateProfileImage()
                         }
                         .padding(.vertical, 10)
@@ -107,21 +106,16 @@ extension CompleteProfileView{
         
         //MARK: - CLEAN LOACL USER
         PersistenceController.shared.deleteUserData()
-//        SwaggerClientAPI.customHeaders.removeValue(forKey: "x-access-token")
         
         Authenticated.send(false)
     }
     
     func performUpdateProfileImage(){
         self.startLoading()
-        
         vm.performUpdateProfileImage() { success, _ in
-            
             self.stopLoading()
-            
             if success {
                 showSuccessLogger(message: "Profile Image get success !")
-
             } else {
                 showErrorLogger(message: "Profile Image get Error !")
             }
@@ -132,15 +126,18 @@ extension CompleteProfileView{
         if !vm.completeProfileValidation(){
             print(" Complete Profile Validation Error !")
             return
+        } else if !vm.checkPhoneNumber(){
+            showErrorLogger(message: "TP error !")
+            return
         }
-//        self.startLoading()
+        
+        self.startLoading()
         ViewRouter.shared.currentRoot = .userTabs
         vm.proceedCompleteProfileAPI() { success, _ in
             self.stopLoading()
             
             if success {
                 showSuccessLogger(message: "Profile data get success !")
-//                vm.isNavLicenseDetailsView = true
             } else {
                 showErrorLogger(message: "Profile data get Error !")
             }

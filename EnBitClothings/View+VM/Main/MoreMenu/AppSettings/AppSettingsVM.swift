@@ -7,6 +7,7 @@
 
 
 import Foundation
+import Alamofire
 
 class AppSettingsVM:BaseVM{
    
@@ -14,35 +15,29 @@ class AppSettingsVM:BaseVM{
     @Published var initialViewAction:Bool = false
 
 }
-extension AppSettingsVM{
     
-    // MARK: - DELETE USER PROFILE
-    func processWithAppSettingResponse(completion: @escaping (_ status: Bool) -> ()){
-        
+// MARK: - DELETE USER PROFILE
+extension AppSettingsVM{
+    func processWithAppSettingResponse( completion: @escaping CompletionHandler) {
         // Check internet connection
-        guard Reachability.isInternetAvailable()else {
-            showNoInternetAlert()
-            completion(false)
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline.")
             return
         }
-        
-//        ProfileAPI.profileDeleteDeleteAccount(accept: ASP.shared.accept) { data, error in
-//            
-//            if error != nil{
-//                self.handleErrorAndShowAlert(error: error)
-//                completion(false)
-//                return
-//           }
-//           
-//            completion(true)
-//            PersistenceController.shared.deleteUserData()
-//            SwaggerClientAPI.customHeaders.removeValue(forKey: "x-access-token")
-//
-//            
-//        }
-     }
-    
-    
-    
+
+        // Prepare the endpoint
+        let endpoint = "/user/delete-account"
+
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .delete, encoding: URLEncoding.default, success: { (response: UserResponse) in
+            
+            completion(true, "Account Delete successful.")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
+    }
 }
-    

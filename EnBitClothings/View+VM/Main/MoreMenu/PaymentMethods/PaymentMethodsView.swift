@@ -49,7 +49,7 @@ struct PaymentMethodsView: View {
 
                             }
                             
-                            Text("Other Method(s)")
+                            Text("Add Card(s)")
                                 .font(.customFont(.RobotoMedium, 14))
                                 .padding(.top, 16)
                                 .padding(.bottom, 18)
@@ -86,7 +86,7 @@ struct PaymentMethodsView: View {
                             }
                         } // : VStack
                         .padding(.horizontal, 16)
-                        CommenButton(buttonTitle: "Pay A$ 0.00", buttonWidth: 219, isFilled: true) {
+                        CommenButton(buttonTitle: "Add Card", buttonWidth: 219, isFilled: true) {
                             checkCardSelected()
                         }
                         .padding(.top, 32)
@@ -95,28 +95,18 @@ struct PaymentMethodsView: View {
                     } // : VStack
                    // .padding(.hor)
                     .foregroundColor(Color.custom(._FFFFFF))
-                    .alert(isPresented: $vm.isShowAlert) {
-                        Alert(
-                            title: Text("Payment Successful !"),
-                            message: Text("you can share the gift with someone."),
-                            dismissButton: .default(Text("OK"), action: {
-                                shareLink()
-                                
-                            })
-                        )
-                    }
                 } // : ScrollView
             } // : ZStack
             .overlay{
                 sheetVisible == 350 ? Color.custom(._00000040).ignoresSafeArea() : Color.clear.ignoresSafeArea()
             }
             ZStack {
-                PaymentSheet(cardNumber: $vm.cardNumber, expirationDate: $vm.expirationDate, cvv: $vm.cvv, isCheckedSaveCard: vm.isCheckedSaveCard, sheetHeight: 350, actionClose: {
+                PaymentSheet(cardNumber: $vm.cardNumber, expirationDate: $vm.expirationDate, cvv: $vm.cvv, sheetHeight: 350, actionClose: {
                 withAnimation(.easeIn(duration: 0.5)){
                     sheetVisible = 850
                 }
-            }, actionPay: {
-                //
+            }, actionAdd: {
+                // todo
             })
             .padding(.bottom, 24)
             .offset(y: sheetVisible)}
@@ -125,16 +115,11 @@ struct PaymentMethodsView: View {
         .navigationBarHidden(true)
     }
     private func checkCardSelected(){
-        if !vm.defaultCardNumber.isEmpty{
-            vm.isShowAlert.toggle()
+        withAnimation(.easeIn(duration: 0.3)){
+            sheetVisible = UIScreen.screenHeight * 0.35
         }
     }
-    private func shareLink(){
-        let url = URL(string: "https://www.example.com")!
-
-                let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-                UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
-    }
+    
 }
 
 struct PaymentMethodsView_Previews: PreviewProvider {

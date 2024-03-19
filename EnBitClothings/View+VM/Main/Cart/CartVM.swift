@@ -13,8 +13,7 @@ class CartVM:BaseVM{
     @Published var cardNumber:String = ""
     @Published var expirationDate:String = ""
     @Published var cvv:String = ""
-    
-    @Published var isCheckedSaveCard:Bool = false
+
     @Published var showCreditCardSheet:Bool = false
     @Published var isPaymentViewActive:Bool = false
     

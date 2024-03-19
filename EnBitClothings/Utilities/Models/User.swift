@@ -2,68 +2,8 @@
 //  User.swift
 //  EnBitClothings
 //
-//  Created by Yashmi Aruksha on 2024-03-13.
+//  Created by Yashmi Aruksha on 2024-03-19.
 //
-
-
-//import Foundation
-//
-//public struct UserResponse: Codable {
-//
-//    public var message: String?
-//    public var success: Bool?
-//    public var token: String?
-//    public var user: User?
-//
-//}
-//
-//public struct User: Codable {
-//
-//    public var _id: String?
-//    public var firstName: String?
-//    public var lastName: String?
-//    public var email: String?
-//    public var phone: String?
-//    public var avatarUrl: String?
-//    public var emailVerifiedAt: String?
-//    public var dateOfBirth: String?
-//    public var address: String?
-//    public var city: String?
-//    public var postCode: String?
-//
-//
-//    public init(_id: String?, firstName: String?, lastName: String?, email: String?, phone: String?, avatarUrl: String?, emailVerifiedAt: String?, dateOfBirth: String?, address: String?, city: String?, postCode: String?) {
-//        self._id = _id
-//        self.firstName = firstName
-//        self.lastName = lastName
-//        self.email = email
-//        self.phone = phone
-//        self.avatarUrl = avatarUrl
-//        self.emailVerifiedAt = emailVerifiedAt
-//        self.dateOfBirth = dateOfBirth
-//        self.address = address
-//        self.city = city
-//        self.postCode = postCode
-//    }
-//
-//    public enum CodingKeys: String, CodingKey {
-//        case _id = "id"
-//        case firstName = "first_name"
-//        case lastName = "last_name"
-//        case email
-//        case phone
-//        case avatarUrl = "avatar_url"
-//        case emailVerifiedAt = "email_verify_at"
-//        case dateOfBirth = "date_of_birth"
-//        case address
-//        case city
-//        case postCode = "post_code"
-//    }
-//
-//
-//}
-
-
 
 import Foundation
 
@@ -104,7 +44,7 @@ public struct User: Codable {
         case postCode = "post_code"
     }
 
-    public init(profilePic: ProfilePic?, id: String?, email: String?, confirmationCode: String?, emailVerifyAt: String?, createdAt: String?, updatedAt: String?, v: Int?, adress: String?, city: String?, dob: String?, firstName: String?, lastName: String?, phone: String?, postCode: String?) {
+    public init(profilePic: ProfilePic?, id: String?, email: String?, confirmationCode: String?, emailVerifyAt: String?, createdAt: String?, updatedAt: String?, adress: String?, city: String?, dob: String?, firstName: String?, lastName: String?, phone: String?, postCode: String?) {
         self.profilePic = profilePic
         self.id = id
         self.email = email

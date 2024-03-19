@@ -5,9 +5,7 @@
 //  Created by Yashmi Aruksha on 2024-03-14.
 //
 
-
 import SwiftUI
-//import Combine
 
 struct CartView: View {
     @State var sheetVisible:CGFloat = UIScreen.screenHeight * 1.1
@@ -97,11 +95,11 @@ struct CartView: View {
             .overlay{
                 sheetVisible == UIScreen.screenHeight * 0.5 ? Color.custom(._00000040).ignoresSafeArea() : Color.clear.ignoresSafeArea()
                 ZStack {
-                    PaymentSheet(cardNumber: $vm.cardNumber, expirationDate: $vm.expirationDate, cvv: $vm.cvv, isCheckedSaveCard: vm.isCheckedSaveCard, sheetHeight: 900, actionClose: {
+                    PaymentSheet(cardNumber: $vm.cardNumber, expirationDate: $vm.expirationDate, cvv: $vm.cvv, sheetHeight: 900, actionClose: {
                         withAnimation(.easeIn(duration: 0.3)){
                             sheetVisible = UIScreen.screenHeight * 1.1
                         }
-                    }, actionPay: {
+                    }, actionAdd: {
                         navigateToPayment()
                     })
                     .padding(.bottom, 24)

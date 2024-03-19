@@ -11,7 +11,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct HomeItemCardView:View {
-    @State var itemCard : Item?
+    @State var itemCard : Product?
     @State var isFav:Bool = false
     let viewAction: (() -> ())?
     var addToFavAction: (() -> ())?
@@ -20,7 +20,7 @@ struct HomeItemCardView:View {
     var body: some View{
         VStack(alignment: .leading){
             HStack(){
-                Text("LKR \(formatNumber(number: itemCard?.price ?? 0))")
+                Text("LKR \(formatNumber(number: Double(itemCard?.price ?? 0)))")
                     .font(.customFont(.RobotoBold, 16))
                     .bold()
                     .foregroundColor(Color.custom(._E9E9E9))
@@ -51,8 +51,8 @@ struct HomeItemCardView:View {
                 }
             } // : HStack
             
-            if (itemCard?.imageUrl) != "" {
-                WebImage(url: URL(string: itemCard?.imageUrl ?? ""))
+            if (itemCard?.images?.first?.url) != "" {
+                WebImage(url: URL(string: itemCard?.images?.first?.url ?? ""))
                     .resizable()
 //                    .scaledToFit()
                     .cornerRadius(8)
@@ -71,36 +71,13 @@ struct HomeItemCardView:View {
 
             }
             
-            
-            if itemCard?.categoryId == "0" {
-                Text("All")
-                    .font(.customFont(.RobotoMedium, 12))
-                    .foregroundColor(Color.custom(._B4B4B4))
-                    .padding(.leading, 8)
-            } else if itemCard?.categoryId == "1"  {
-                Text("Kids")
-                    .font(.customFont(.RobotoMedium, 12))
-                    .foregroundColor(Color.custom(._B4B4B4))
-                    .padding(.leading, 8)
-            } else if itemCard?.categoryId == "2"  {
-                Text("Ladies")
-                    .font(.customFont(.RobotoMedium, 12))
-                    .foregroundColor(Color.custom(._B4B4B4))
-                    .padding(.leading, 8)
-            } else if itemCard?.categoryId == "3"  {
-                Text("Gents")
-                    .font(.customFont(.RobotoMedium, 12))
-                    .foregroundColor(Color.custom(._B4B4B4))
-                    .padding(.leading, 8)
-            } else {
-                Text("Other")
-                    .font(.customFont(.RobotoMedium, 12))
-                    .foregroundColor(Color.custom(._B4B4B4))
-                    .padding(.leading, 8)
-            }
+            Text(itemCard?.category?.category ?? "")
+                .font(.customFont(.RobotoMedium, 12))
+                .foregroundColor(Color.custom(._B4B4B4))
+                .padding(.leading, 8)
+                .padding(.top, 5)
 
-            
-            Text(itemCard?.itemTitle ?? "")
+            Text(itemCard?.name ?? "")
                 .font(.customFont(.RobotoMedium, 14))
                 .padding(.leading, 8)
                 .padding(.trailing, 11)

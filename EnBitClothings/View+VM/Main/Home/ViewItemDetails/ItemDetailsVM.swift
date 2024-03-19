@@ -8,15 +8,16 @@
 
 import Foundation
 import SwiftUI
+import Alamofire
 
 class ItemDetailsVM:BaseVM{
     @Published var currentPage = 0
     @Published var imageNames:[String] = ["GiftPlaceHolder","GiftPlaceHolder","GiftPlaceHolder","GiftPlaceHolder"]
     @Published var isActiveGenerateItemCardView:Bool = false
-    @Published var clothItem:Item?
-    @Published var addFavoriteGifts : Item?
+    @Published var clothItem:Product?
+    @Published var addFavoriteGifts : Product?
     
-    init(clothItem: Item?) {
+    init(clothItem: Product?) {
         self.clothItem = clothItem
     }
 }
@@ -24,36 +25,26 @@ class ItemDetailsVM:BaseVM{
 
 //MARK: - ADD OR REMOVE FAVORITES FUNCATION
 extension ItemDetailsVM {
-    func processWithFavoriteItems(itemId: Int, favStatus: Int, completion: @escaping (_ status: Bool) -> ()) {
-        
-        // Check internet connection
+    func processWithFavoriteItems(itemId: String, favStatus: Int, completion: @escaping CompletionHandler) {
+        // check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
+            completion(false, "Internet connection appears to be offline. ")
             return
         }
+
+        // Prepare the endpoint
+        let endpoint = "/product/\(itemId)/like"
         
-//        GiftsAPI.giftsPostAddToFavouriteGifts(giftId: giftId, status: favStatus, accept: ASP.shared.accept) { data, error in
-//            
-//            if error != nil{
-//                self.handleErrorResponse(error) { (status, statusCode, message) in
-//                    self.isShowAlert = true
-//                    self.alertTitle = .Error
-//                    self.alertMessage = message
-//                    print("❤️❤️ \(message) ❤️❤️")
-//                    completion(false)
-//                }
-//            } else {
-//                guard let giftResponse = data?.payload else {
-//                    self.alertTitle = .Error
-//                    self.alertMessage = .MissingData
-//                    self.isShowAlert = true
-//                    return
-//                }
-//                self.addFavoriteItems = giftResponse
-//                completion(true)
-//            }
-//        }
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .put, encoding: URLEncoding.default, success: { (response: ProductResponse) in
+
+            completion(true, "Sucess Product Data Getting..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
-        
 }

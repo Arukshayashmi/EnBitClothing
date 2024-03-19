@@ -8,171 +8,111 @@
 
 import Foundation
 import SwiftUI
+import Alamofire
 
 class HomeVM:BaseVM {
     @Published var searchText:String = ""
     @Published var isActiveDetailsView:Bool = false
-    @Published var isActiveFilterView:Bool = false
-    
-    
-    @Published var minPrice:String = ""
-    @Published var maxPrice:String = ""
     
     @Published var ItemCategories:[Categories] = []
     @Published var selectedItemCategory : Categories? = nil
     
-    @Published var ItemCards : [Item] = []
-    @Published var selectedItemCard : Item? = nil
+    @Published var ItemCards : [Product] = []
+    @Published var selectedItemCard : Product? = nil
     
-    @Published var addFavoriteItems : Item?
-    
-    @Published var paginator : Paginator? = nil
+    @Published var addFavoriteItems : Product?
 }
 
+//MARK: - GET CATEGORIES FUNCATION
 extension HomeVM {
-    func performCategoryData() {
-        withAnimation(.easeIn){
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.ItemCategories = Dummy.category
-                self.ItemCards = Dummy.ItemData
-            }
+    func processWithCategories(completion: @escaping CompletionHandler) {
+        // check internet connection
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline. ")
+            return
         }
+        
+        // Prepare the endpoint
+        let endpoint = "/category/get-all"
+        
+        
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .get, encoding: URLEncoding.default, success: { (response: CategoryResponse) in
+            guard let productModel = response.categories else {
+                completion(false, "Product Model Missing..")
+                return
+            }
+            
+            self.ItemCategories = productModel
+            
+            completion(true, "Sucess Categories Getting..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
 }
 
 //MARK: - GET ITEM CARDS FUNCATION
 extension HomeVM {
-    
-    func processWithItemCards(minPrice: String, maxPrice: String, categoryId: String, q: String, page: Int, perPage: Int, isPaging: Bool = false, completion: @escaping (_ status: Bool) -> ()) {
-        //
-        
-        // Check internet connection
+    func processWithItemCards(categoryId: String, q: String, completion: @escaping CompletionHandler) {
+        // check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
+            completion(false, "Internet connection appears to be offline. ")
             return
         }
+
+        // Prepare the endpoint
+        let endpoint = "/product/get-all?q=\(q)&categoryId=\(categoryId)"
         
-        // Clean array before API call and load data
-        if isPaging == false {
-            ItemCards.removeAll()
-        }
+        self.ItemCards.removeAll()
         
-//        GiftsAPI.giftsGetGiftsListHome(accept: ASP.shared.accept, q: searchText, page: page, perPage: 10, categoryId: categoryId, minPrice: minPrice, maxPrice: maxPrice) { data, error in
-//            print(categoryId)
-//            print(q)
-//            
-//            print(data)
-//            
-//            if error != nil{
-//                self.handleErrorResponse(error) { (status, statusCode, message) in
-//                    self.isShowAlert = true
-//                    self.alertTitle = .Error
-//                    self.alertMessage = message
-//                    print("❤️❤️ \(message) ❤️❤️")
-//                    completion(false)
-//                }
-//                
-//            } else {
-//                guard let giftCardsResponse : [Item] = data?.payload else {
-//                    self.alertTitle = .Error
-//                    self.alertMessage = .MissingData
-//                    self.isShowAlert = true
-//                    return
-//                }
-//                self.paginator = data?.paginator
-//                
-//                if isPaging {
-//                    self.ItemCards += giftCardsResponse
-//                } else {
-//                    self.ItemCards = giftCardsResponse
-//                }
-//                
-//                
-//                completion(true)
-//            }
-//        }
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .get, encoding: URLEncoding.default, success: { (response: ProductResponse) in
+            guard let productModel = response.products else {
+                completion(false, "Product Model Missing..")
+                return
+            }
+            
+            self.ItemCards = productModel
+
+            completion(true, "Sucess Product Data Getting..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
-    
 }
 
 
-//MARK: - ADD OR REMOVE FAVORITES FUNCATION
+//MARK: - FAVORITE FUNCATION
 extension HomeVM {
-    func processWithFavoriteItems(itemId: Int, favStatus: Int, completion: @escaping (_ status: Bool) -> ()) {
-        
-        // Check internet connection
+    func processWithFavoriteItems(itemId: String, favStatus: Int, completion: @escaping CompletionHandler) {
+        // check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
+            completion(false, "Internet connection appears to be offline. ")
             return
         }
+
+        // Prepare the endpoint
+        let endpoint = "/product/\(itemId)/like"
         
-//        GiftsAPI.giftsPostAddToFavouriteGifts(giftId: giftId, status: favStatus, accept: ASP.shared.accept) { data, error in
-//            
-//            if error != nil{
-//                self.handleErrorResponse(error) { (status, statusCode, message) in
-//                    self.isShowAlert = true
-//                    self.alertTitle = .Error
-//                    self.alertMessage = message
-//                    print("❤️❤️ \(message) ❤️❤️")
-//                    completion(false)
-//                }
-//            } else {
-//                guard let giftResponse = data?.payload else {
-//                    self.alertTitle = .Error
-//                    self.alertMessage = .MissingData
-//                    self.isShowAlert = true
-//                    return
-//                }
-//                self.addFavoriteItems = giftResponse
-//                completion(true)
-//            }
-//        }
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .put, encoding: URLEncoding.default, success: { (response: ProductResponse) in
+
+            completion(true, "Sucess Product Data Getting..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
-        
 }
-
-
-//MARK: - GET CATEGORIES FUNCATION
-extension HomeVM {
-    
-    func processWithItemCategories(completion: @escaping (_ status: Bool) -> ()) {
-        
-        // Check internet connection
-        guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
-            return
-        }
-        
-        // Clean array before API call and load data
-        ItemCategories.removeAll()
-        
-//        CategoryAPI.categoryGetListAllCategory(accept: ASP.shared.accept) { response, error in
-//            print(response)
-//            
-//            if error != nil{
-//                self.handleErrorResponse(error) { (status, statusCode, message) in
-//                    self.isShowAlert = true
-//                    self.alertTitle = .Error
-//                    self.alertMessage = message
-//                    print("❤️❤️ \(message) ❤️❤️")
-//                    completion(false)
-//                }
-//            } else {
-//                guard (response?.payload) != nil else {
-//                    self.alertTitle = .Error
-//                    self.alertMessage = .MissingData
-//                    self.isShowAlert = true
-//                    return
-//                }
-//                
-//                self.giftCategories = response?.payload ?? []
-//                completion(true)
-//            }
-//        }
-    }
-    
-}
-

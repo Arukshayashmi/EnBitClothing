@@ -10,8 +10,8 @@ import SwiftUI
 
 struct CategoryButton: View {
     @State var categoryName : String
-    @State var categoryId: Int
-    @Binding var selectedCategoryId: Int
+    @State var categoryId: String
+    @Binding var selectedCategoryId: String
     let action: (() -> ())?
     
     var body: some View {

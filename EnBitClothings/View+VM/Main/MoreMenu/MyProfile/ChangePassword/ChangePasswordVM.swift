@@ -14,13 +14,10 @@ class ChangePasswordVM:BaseVM{
     @Published var currentPassword:String = ""
     @Published var newPassword:String = ""
     @Published var newPasswordConfirm:String = ""
-    
-    
-    
+
     @Published var showPassword:Bool = false
     @Published var showNewPassword:Bool = false
     @Published var showNewPasswordConfirm:Bool = false
-    
 }
 
 extension ChangePasswordVM{
@@ -44,41 +41,36 @@ extension ChangePasswordVM{
         }
         return false
     }
-    
-    
-    
-    
-    
-    func changePassword(newPassword:String, currentPassword:String, newPasswordConfirm:String, completion : @escaping (_ status: Bool) -> ()){
-        
+}
+
+//MARK: - CHANGE PASSWORD FUNCATION
+
+extension ChangePasswordVM {
+    func changePassword(newPassword: String, currentPassword: String, newPasswordConfirm: String, completion : @escaping CompletionHandler) {
         // Check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
-            completion(false)
+            completion(false, "Internet connection appears to be offline.")
             return
         }
         
-//        AuthAPI.authPostUpdatePassword(password: newPassword, currentPassword: currentPassword, passwordConfirmation: newPasswordConfirm, accept: ASP.shared.accept) { data, error in
-//            //
-//            
-//            if error != nil {
-//                self.handleErrorAndShowAlert(error: error)
-//                
-//                self.isShowAlert = true
-//                self.alertTitle = "Passwords Do Not Match"
-//                self.alertMessage = data?.message ?? "The passwords you have entered do not match"
-//                completion(false)
-//                return
-//                
-//            } else {
-//                self.isShowAlert = false
-//                self.alertTitle = .Success
-//                self.alertMessage = data?.message ?? ""
-//                completion(true)
-//                return
-//            }
-//        }
+        // Prepare the endpoint
+        let endpoint = "/user/password-update"
         
+        // Prepare the data to be sent in the request body
+        let parameters: [String: Any] = [
+            "oldPassword": currentPassword,
+            "newPassword": newPassword,
+        ]
+        
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .put, parameters: parameters, success: { (response: UserResponse) in
+            completion(true, "Change Password Success.")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
 }
-

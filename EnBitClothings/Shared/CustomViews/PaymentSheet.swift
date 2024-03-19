@@ -12,10 +12,9 @@ struct PaymentSheet: View {
     @Binding var cardNumber:String
     @Binding var expirationDate:String
     @Binding var cvv:String
-    @State var isCheckedSaveCard:Bool
     @State var sheetHeight:CGFloat
     var actionClose: ()->()?
-    var actionPay: ()->()?
+    var actionAdd: ()->()?
     
     @FocusState var keyboardActive:Bool
     
@@ -40,28 +39,8 @@ struct PaymentSheet: View {
             .padding(.horizontal, 16)
             .padding(.top, 16)
 
-            HStack{
-                Button {
-                    isCheckedSaveCard.toggle()
-                } label: {
-                    HStack{
-                        Image(systemName: isCheckedSaveCard ? "checkmark.square" : "square")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundColor(Color.custom(._FFFFFF))
-                            .frame(height: 18)
-                            .padding(.trailing,11)
-                            .padding(.leading, 16)
-                        Text("Save this card for future payments.")
-                            .font(.customFont(.RobotoRegular, 14))
-                    } //: Hstack
-                }
-                
-                    
-                
-            } // : HStack
-            CommenButton(buttonTitle: "Pay A$ 0.00", buttonWidth: 219, isFilled: true) {
-                actionPay()
+            CommenButton(buttonTitle: "Add", buttonWidth: 180, isFilled: true) {
+                actionAdd()
             }
             .padding(.top, 32)
             Spacer()

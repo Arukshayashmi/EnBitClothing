@@ -9,6 +9,7 @@
 
 import Foundation
 import PhoneNumberKit
+import Alamofire
 
 class EditProfileVM:BaseVM{
         @Published var firstName:String = ""
@@ -61,66 +62,136 @@ extension EditProfileVM{
         return false
     }
     
-//    //MARK: - PHONE NUMBER VALIDATIONS
-//    func checkPhoneNumber() -> Bool {
-//        
-//        contactNumber = countryCode + phoneNumber
-//        
-//        do {
-//            print("✅ phone is: \(self.contactNumber)")
-//            let validatedPhoneNumber = try self.phoneNumberKit.parse(self.contactNumber)
-//            print("✅✅ Validated Number: \(validatedPhoneNumber)")
-//        }
-//        catch {
-//            self.alertMessage = "Please enter valid mobile number"
-//            self.alertTitle = .Error
-//            self.isShowAlert = true
-//            
-//            return false
-//        }
-//        return true
-//    }
+    //MARK: - PHONE NUMBER VALIDATIONS
+    func checkPhoneNumber() -> Bool {
+        
+        contactNumber = countryCode + phoneNumber
+        
+        do {
+            print("✅ phone is: \(self.contactNumber)")
+            let validatedPhoneNumber = try self.phoneNumberKit.parse(self.contactNumber)
+            print("✅✅ Validated Number: \(validatedPhoneNumber)")
+        }
+        catch {
+            self.alertMessage = "Please enter valid mobile number"
+            self.alertTitle = .Error
+            self.isShowAlert = true
+            
+            return false
+        }
+        return true
+    }
 }
 
 
-//MARK: - LOAD USER DATA FUNCTION
+// MARK: - EDIT PROFILE DETAILS FUNCTION
+
 extension EditProfileVM{
-    func loadProfileDetails(completion: @escaping (_ status: Bool) -> ()){
-        
-        //:Check internet connection
-        if !Reachability.isInternetAvailable(){
-            self.showNoInternetAlert()
-            self.stopLoading()
+    func editProfileDetails(completion: @escaping CompletionHandler) {
+        // check internet connection
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline. ")
             return
         }
+
+        // Prepare the endpoint
+        let endpoint = "/user/profile-update"
         
-//        ProfileAPI.profilePostUpdateProfileStep1(accept: ASP.shared.accept, firstName: firstName, lastName: lastName, phone: phoneNumber, countryCode: countryCode, dateOfBirth: selectedDateString, address: address, city: city, postCode: postCode, state: state){ response, error in
-//            //print(response)
-//            
-//            if error != nil {
-//                self.handleErrorAndShowAlert(error: error)
-//                completion(false)
-//            } else {
-//                guard let user = response?.payload else {
-//                    completion(false)
-//                    return
-//                }
-//                self.setupUI(user: user)
-//                PersistenceController.shared.updateUserData(with: user)
-//                completion(true)
-//            }
-//        }
-    }
-    func setupUI(user:User) {
-        
-        self.firstName = user.firstName ?? ""
-        self.lastName = user.lastName ?? ""
-        self.dobValue = user.dob ?? ""
-        self.address = user.adress ?? ""
-        self.city = user.city ?? ""
-        self.postCode = user.postCode ?? ""
-        self.phoneNumber = user.phone ?? ""
-        
+        // Prepare the data to be sent in the request body
+        let parameters: [String: Any] = [
+            "first_name": firstName,
+            "last_name": lastName,
+            "phone": contactNumber,
+            "dob": selectedDateString,
+            "adress": address,
+            "city": city,
+            "post_code": postCode
+        ]
+
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .put, parameters: parameters, success: { (response: UserResponse) in
+            guard let userModel = response.user else {
+                completion(false, "User Model Missing..")
+                return
+            }
+            //MARK: - LOCAL USER SAVE
+            PersistenceController.shared.updateUserData(with: userModel)
+            
+            iBSUserDefaults.localUser = userModel
+
+            completion(true, "Sucess Data updating..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
 }
 
+
+// MARK: - LOAD USER DATA FUNCTION
+
+extension EditProfileVM{
+    func loadProfileDetails(completion: @escaping CompletionHandler) {
+        // check internet connection
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline. ")
+            return
+        }
+
+        // Prepare the endpoint
+        let endpoint = "/user/profile"
+        
+        let id = iBSUserDefaults.localUser?.id ?? String()
+        
+        // Prepare the data to be sent in the request body
+        let parameters: [String: Any] = [
+            "_id": id
+        ]
+        
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .get, parameters: parameters, encoding: URLEncoding.default, success: { (response: UserResponse) in
+            guard let userModel = response.user else {
+                completion(false, "User Model Missing..")
+                return
+            }
+            self.firstName = userModel.firstName ?? ""
+            self.lastName = userModel.lastName ?? ""
+            self.dob = self.convertStringToDate(userModel.dob ?? "", format: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") ?? Date()
+            self.address = userModel.adress ?? ""
+            self.city = userModel.city ?? ""
+            self.postCode = userModel.postCode ?? ""
+            self.extractCountryCode(from: userModel.phone ?? "")
+
+            completion(true, "Sucess Data getting..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
+    }
+}
+
+extension EditProfileVM{
+    //MARK: - EXTRACT COUNTRY CODE FUNCTION
+    func extractCountryCode(from contactNumber: String) {
+        
+        do {
+            let contactNumber = try phoneNumberKit.parse(contactNumber)
+            print(contactNumber.countryCode)
+            print( contactNumber.nationalNumber)
+            countryCode = "+\(contactNumber.countryCode)"
+            phoneNumber = "\(contactNumber.nationalNumber)"
+        }
+        catch {
+            self.isShowAlert = true
+            self.showInfoLogger(message: "Generic parser error")
+            self.alertMessage = "Generic parser error"
+            self.alertTitle = .Error
+        }
+    }
+}

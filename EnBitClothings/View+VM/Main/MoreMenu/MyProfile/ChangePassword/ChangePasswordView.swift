@@ -39,9 +39,6 @@ struct ChangePasswordView: View {
                     } //: VStack
                     .padding(.top, 40)
                 }
-                
-                
-                
                 Spacer()
             } //: VStack
             .foregroundColor(Color.custom(._FFFFFF))
@@ -52,22 +49,20 @@ struct ChangePasswordView: View {
         } //: ZStack
         .navigationBarHidden(true)
     }
+    
     func changePasswordAPI(){
         if vm.passwordValidation(){
             print("Error")
             return
         }
-//        self.startLoading()
-        
-        vm.changePassword(newPassword: vm.newPassword, currentPassword: vm.currentPassword, newPasswordConfirm: vm.newPasswordConfirm) { status in
+        self.startLoading()
+        vm.changePassword(newPassword: vm.newPassword, currentPassword: vm.currentPassword, newPasswordConfirm: vm.newPasswordConfirm) { status, _ in
             self.stopLoading()
-            
             if status{
                 print("Password Updated")
                 vm.alertTitle = "Done"
                 vm.alertMessage = "Password Updated"
                 vm.isShowAlert = true
-                
             } else {
                 print("Password not Updated")
                 vm.alertTitle = "Error"

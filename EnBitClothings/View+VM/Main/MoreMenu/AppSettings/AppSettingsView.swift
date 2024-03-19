@@ -51,7 +51,7 @@ struct AppSettingsView: View {
     //delete API call
     func deleteAPIcall(){
         self.startLoading()
-        vm.processWithAppSettingResponse { status in
+        vm.processWithAppSettingResponse { status, _  in
             self.stopLoading()
             
             if status {

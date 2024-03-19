@@ -48,14 +48,10 @@ struct ContactUsView: View {
     }
     private func contactUsAPICall(){
         self.startLoading()
-        vm.proceesdSendMessage { status in
             self.stopLoading()
-            if status {
                 vm.alertTitle = "Succees"
                 vm.alertMessage = "Message Sended"
                 vm.isShowAlert = true
-            }
-        }
     }
 
 }

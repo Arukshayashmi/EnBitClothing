@@ -21,20 +21,5 @@ extension ContactUsVM{
             completion(false)
             return
         }
-
-//        ContactUsAPI.contactUsPostSendAMessage(message: message, accept: ASP.shared.accept) { data, error in
-//            if error != nil {
-//                self.handleErrorResponse(error) { (status, statusCode, message) in
-//                    self.alertTitle = "Contact Us Error"
-//                    self.alertMessage = message
-//                    self.isShowAlert = true
-//                    
-//                    return
-//                }
-//                completion(false)
-//            } else {
-//                completion(true)
-//            }
-//        }
     }
 }

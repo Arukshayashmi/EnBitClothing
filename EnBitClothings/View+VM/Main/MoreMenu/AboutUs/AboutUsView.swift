@@ -29,7 +29,7 @@ struct AboutUsView: View {
                     .padding(.bottom, UIScreen.screenHeight * 0.02)
                 ScrollView(showsIndicators: false) {
                     VStack{
-                        Text(vm.aboutUsUrl)
+                        Text(vm.aboutUs)
                             .font(.customFont(.RobotoMedium, 16))
                     } //: VStack
                     .padding(.vertical, 24)
@@ -38,21 +38,13 @@ struct AboutUsView: View {
                 .frame(width: UIScreen.screenWidth * 0.9,height: UIScreen.screenHeight * 0.615)
                 .background(Color.custom(._FFFFFF).opacity(0.13))
                 .padding(.bottom, 8)
+                .cornerRadius(10)
                 
             } //: VStack
             .padding(.horizontal, 16)
             .foregroundColor(Color.custom(._FFFFFF))
-            .onAppear{
-                loadAboutUsSettings()
-            }
         } //: ZStack
         .navigationBarHidden(true)
-    }
-    func loadAboutUsSettings(){
-//        self.startLoading()
-        vm.loadAboutUsSettings { succes in
-            self.stopLoading()
-        }
     }
 }
 

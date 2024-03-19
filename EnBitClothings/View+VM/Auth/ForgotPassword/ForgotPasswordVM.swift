@@ -15,7 +15,7 @@ class ForgotPasswordVM:BaseVM {
 extension ForgotPasswordVM {
     func checkEmail() -> Bool{
         if email.isEmpty{
-            self.alertMessage = "Please enter  email address"
+            self.alertMessage = "Please enter email address"
             self.alertTitle = "Empty Email"
             self.isShowAlert = true
             
@@ -44,7 +44,7 @@ extension ForgotPasswordVM {
         }
 
         // Prepare the endpoint
-        let endpoint = "/resetPassword"
+        let endpoint = "/user/reset-password"
 
         // Prepare the data to be sent in the request body
         let parameters: [String: Any] = [
@@ -52,7 +52,7 @@ extension ForgotPasswordVM {
         ]
 
         // Make the request with JSON encoding
-        AFWrapper.shared.request(endpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default, success: { (response: UserResponse) in
+        AFWrapper.shared.request(endpoint, method: .post, parameters: parameters, success: { (response: UserResponse) in
             
             completion(true, "Password Reset Success.")
         }, failure: { error in

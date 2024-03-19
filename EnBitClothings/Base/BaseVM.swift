@@ -123,34 +123,27 @@ extension BaseVM {
     }
 }
 
-//extension BaseVM{
-//    //MARK: - LOGOUT FUNCATION
-//    func proceedLogoutAPi(completion: @escaping (_ status: Bool) -> ()) {
-//        
-//        // Check internet connection
-//        guard Reachability.isInternetAvailable() else {
-//            showNoInternetAlert()
-//            completion(false)
-//            return
-//        }
-//        
-//        
-//        
-//        AuthAPI.authGetLogout(accept: ASP.shared.accept) { response, error in
-//            
-//            if error != nil {
-//                self.handleErrorAndShowAlert(error: error)
-//                completion(false)
-//                return
-//                
-//            }else{
-//                completion(true)
-//                PersistenceController.shared.deleteUserData()
-//            }
-//        }
-//        
-//    }
-//}
+extension BaseVM{
+    func convertStringToDate(_ dateString: String, format: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        return formatter.date(from: dateString)
+    }
+
+    func extractDate(from isoDate: String) -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        if let date = isoFormatter.date(from: isoDate) {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            
+            return dateFormatter.string(from: date)
+        } else {
+            return "Invalid date"
+        }
+    }
+}
 
 
 extension BaseVM {

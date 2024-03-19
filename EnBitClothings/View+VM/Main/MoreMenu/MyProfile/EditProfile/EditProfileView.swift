@@ -47,8 +47,7 @@ struct EditProfileView: View {
                         Spacer()
                     } //: VStack
                     CommenButton(buttonTitle: "Save Changes", buttonWidth: UIScreen.screenWidth * 0.9, isFilled: true) {
-                        //editProfileAPiCall()
-                        loadProfileDetailsEdit()
+                        editProfileDetails()
                     }
                     .padding(.top, 16)
                 } //: Scroll View
@@ -64,9 +63,7 @@ struct EditProfileView: View {
         } //: ZStack
         .withBaseViewMod()
         .onAppear{
-            
-            loadProfileDetailsLoading()
-
+            loadProfileDetails()
         }
 
         .navigationBarHidden(true)
@@ -80,25 +77,26 @@ struct EditProfileView: View {
 }
 
 extension EditProfileView{
-    func loadProfileDetailsLoading(){
-//        self.startLoading()
-        vm.loadProfileDetails{ success in
+    func loadProfileDetails(){
+        self.startLoading()
+        vm.loadProfileDetails{ success, _ in
             self.stopLoading()
-            
             if success {
                 showSuccessLogger(message: "User data loding success !")
-                
             } else {
                 showErrorLogger(message: "User data loading Error !")
             }
         }
     }
     
-    func loadProfileDetailsEdit(){
-//        self.startLoading()
+    func editProfileDetails(){
+    if !vm.checkPhoneNumber(){
+        showErrorLogger(message: "TP error !")
+        return
+    }
+        self.startLoading()
         presentationMode.wrappedValue.dismiss()
-
-        vm.loadProfileDetails{ success in
+        vm.editProfileDetails{ success, _ in
             self.stopLoading()
             
             if success {

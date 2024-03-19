@@ -21,7 +21,7 @@ struct TermsAndConditionsView: View {
                     .padding(.bottom, 16)
                 
                 ScrollView(showsIndicators:false) {
-                    Text(vm.termsUrl)
+                    Text(vm.terms)
                         .font(.customFont(.RobotoMedium, 16))
                 }
                 .padding(.horizontal, 16)
@@ -30,21 +30,13 @@ struct TermsAndConditionsView: View {
                 .frame(width: UIScreen.screenWidth * 0.9)
                 .background(Color.custom(._FFFFFF).opacity(0.13))
                 .padding(.bottom, 10)
+                .cornerRadius(10)
                 Spacer()
             } //: VStack
             .padding(.horizontal, 16)
             .foregroundColor(Color.custom(._FFFFFF))
-            .onAppear{
-                loadTerms()
-            }
         } //: ZStack
         .navigationBarHidden(true)
-    }
-    private func loadTerms(){
-//        self.startLoading()
-        vm.loadTermsSettings { status in
-            self.stopLoading()
-        }
     }
 }
 
