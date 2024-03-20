@@ -10,13 +10,15 @@ import Foundation
 import SwiftUI
 
 class PaymentMethodsVM:BaseVM{
-    @Published var savedCardNumbers:[String] = ["345X XXXX XXXX X234","445X XXXX XXXX X234"]
+    @Published var savedCardNumbers:[String] = []
     
     var defaultCardNumber:String = ""
     
     @Published var cardNumber:String = ""
     @Published var expirationDate:String = ""
     @Published var cvv:String = ""
+    
+    @Published var card: Card?
     
     func checkTextFields() ->Bool{
         if cardNumber.isEmpty{

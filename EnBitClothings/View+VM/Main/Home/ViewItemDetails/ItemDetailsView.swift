@@ -75,8 +75,8 @@ struct ItemDetailsView: View {
                             .padding(.leading, 16)
                             .padding(.bottom, 13)
                         HStack {
-                            CommenButton(buttonTitle: "Get This Item", buttonWidth: 271, isFilled: true) {
-                                vm.isActiveGenerateItemCardView = true
+                            CommenButton(buttonTitle: "Add to cart", buttonWidth: 271, isFilled: true) {
+                                AddToCart(itemId: vm.clothItem?.id ?? "")
                             }
                             .padding(.leading, 16)
                             
@@ -126,8 +126,28 @@ struct ItemDetailsView: View {
             .onAppear {
                 self.isFav = vm.clothItem?.isFavourite ?? false
             }
+            .alert(isPresented: $vm.isShowAlert) {
+                Alert(
+                    title: Text(vm.alertTitle),
+                    message: Text(vm.alertMessage),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         } // : ZStack
         .navigationBarHidden(true)
+    }
+    
+    //MARK: - ADD TO CART API CALL.
+    func AddToCart(itemId: String){
+        self.startLoading()
+        vm.processWithAddToCartItems(itemId: itemId) { success, _ in
+            self.stopLoading()
+            if success{
+                showSuccessLogger(message: "add to cart success !")
+            } else {
+                showErrorLogger(message:  "add to cart function Error !")
+            }
+        }
     }
     
     //MARK: - ADD OR REMOVE FAVORITE API CALL.

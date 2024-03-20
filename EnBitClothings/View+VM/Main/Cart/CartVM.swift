@@ -8,8 +8,11 @@
 
 import Foundation
 import SwiftUI
+import Alamofire
 
 class CartVM:BaseVM{
+    var defaultCardNumber:String = ""
+    
     @Published var cardNumber:String = ""
     @Published var expirationDate:String = ""
     @Published var cvv:String = ""
@@ -17,8 +20,8 @@ class CartVM:BaseVM{
     @Published var showCreditCardSheet:Bool = false
     @Published var isPaymentViewActive:Bool = false
     
-    @Published var cartItems : [Item] = []
-    @Published var selectedCartItem:Item?
+    @Published var cartItems : [CheckoutProduct] = []
+    @Published var selectedCartItem:CheckoutProduct?
 
     @Published var cartItemCount = 0
     
@@ -43,10 +46,35 @@ class CartVM:BaseVM{
      return false
     }
 }
+
+//MARK: - GET CATEGORIES FUNCATION
 extension CartVM {
-    func performCartData() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.cartItems = Dummy.ItemData
+    func processWithCart(completion: @escaping CompletionHandler) {
+        // check internet connection
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline. ")
+            return
         }
+        
+        // Prepare the endpoint
+        let endpoint = "/checkout/getall"
+        
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .get, encoding: URLEncoding.default, success: { (response: CartResponse) in
+            guard let cartModel = response.checkoutProducts else {
+                completion(false, "Product Model Missing..")
+                return
+            }
+            
+            self.cartItems = cartModel
+            
+            completion(true, "Sucess Categories Getting..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
     }
 }

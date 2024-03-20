@@ -122,9 +122,9 @@ extension PersistenceController {
         let entity = CardDetails.entity()
         let cardData = CardDetails(entity: entity, insertInto: context)
         
-        cardData.cardNumber = Int64(card.cardNumber ?? 0)
-        cardData.expMonth = Int32(card.expMonth ?? 0)
-        cardData.cvv = Int16(card.cvv ?? 0)
+        cardData.cardNumber = card.cardNumber
+        cardData.expMonth = card.expMonth
+        cardData.cvv = card.cvv
         
         do {
             try context.save()
@@ -136,15 +136,14 @@ extension PersistenceController {
         return nil
     }
     
-    func loadCardData() -> CardDetails? {
+    func loadCardData() -> [CardDetails]? {
         let context = PersistenceController.shared.mainContext
         let fetchRequest: NSFetchRequest<CardDetails> = CardDetails.fetchRequest()
         
         do {
-            let result = try context.fetch(fetchRequest).first
-            return result
-        }
-        catch {
+            let results = try context.fetch(fetchRequest)
+            return results
+        } catch {
             debugPrint(error)
         }
         

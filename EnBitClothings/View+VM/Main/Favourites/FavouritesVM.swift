@@ -31,8 +31,8 @@ extension FavouritesVM {
                 self.ItemCards.removeAll()
                 
                 // Make the request with JSON encoding
-                AFWrapper.shared.request(endpoint, method: .get, encoding: URLEncoding.default, success: { (response: ProductResponse) in
-                    guard let productModel = response.products else {
+                AFWrapper.shared.request(endpoint, method: .get, encoding: URLEncoding.default, success: { (response: FavouriteResponse) in
+                    guard let productModel = response.likedProducts else {
                         completion(false, "Product Model Missing..")
                         return
                     }

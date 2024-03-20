@@ -27,7 +27,7 @@ struct PaymentMethodsView: View {
                                 .font(.customFont(.RobotoMedium, 14))
                                 .padding(.bottom, 14)
                                 .padding(.trailing, UIScreen.screenWidth * 0.47)
-                            ForEach(0..<vm.savedCardNumbers.count){index in
+                            ForEach(Array(vm.savedCardNumbers.enumerated()), id: \.offset) { index, card in
                                 Button {
                                     defaultCardIndex = index
                                     if defaultCardIndex == index{
@@ -36,15 +36,9 @@ struct PaymentMethodsView: View {
                                     }
                                     
                                 } label: {
-                                    HStack{
-                                        Image(systemName: defaultCardIndex == index ? "checkmark.circle" : "circle")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(height: 24)
                                         SavedCardView(creditCardNumber: vm.savedCardNumbers[index])
-                                    }
                                     .padding(.bottom, 16)
-                                    .padding(.leading, 8)
+                                    .padding(.leading, 16)
                                 }
 
                             }
@@ -93,8 +87,10 @@ struct PaymentMethodsView: View {
                         
                         
                     } // : VStack
-                   // .padding(.hor)
                     .foregroundColor(Color.custom(._FFFFFF))
+                    .onAppear{
+                        loadCardData()
+                    }
                 } // : ScrollView
             } // : ZStack
             .overlay{
@@ -106,7 +102,7 @@ struct PaymentMethodsView: View {
                     sheetVisible = 850
                 }
             }, actionAdd: {
-                // todo
+                addAction()
             })
             .padding(.bottom, 24)
             .offset(y: sheetVisible)}
@@ -118,6 +114,24 @@ struct PaymentMethodsView: View {
         withAnimation(.easeIn(duration: 0.3)){
             sheetVisible = UIScreen.screenHeight * 0.35
         }
+    }
+    
+    private func loadCardData() {
+        let cards = PersistenceController.shared.loadCardData() ?? []
+        
+        for card in cards {
+            vm.savedCardNumbers.append(card.cardNumber ?? "")
+        }
+    }
+    
+    private func addAction() {
+        startLoading()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let newCard = Card(id: nil, cardNumber: vm.cardNumber, expMonth: vm.expirationDate, cvv: vm.cvv)
+            vm.card = newCard
+            PersistenceController.shared.saveCardData(with: newCard)
+        }
+        stopLoading()
     }
     
 }

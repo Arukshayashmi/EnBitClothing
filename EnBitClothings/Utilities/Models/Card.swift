@@ -22,17 +22,17 @@ public struct CardResponse: Codable {
 
 // MARK: - Categories
 public struct Card: Codable {
-    public let id: Int?
-    public let cardNumber: Int?
-    public let expMonth: Int?
-    public let cvv: Int?
+    public var id: String?
+    public var cardNumber: String?
+    public var expMonth: String?
+    public var cvv: String?
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case cardNumber, expMonth, cvv
     }
 
-    public init(id: Int?, cardNumber: Int?, expMonth: Int?, cvv: Int?) {
+    public init(id: String?, cardNumber: String?, expMonth: String?, cvv: String?) {
         self.id = id
         self.cardNumber = cardNumber
         self.expMonth = expMonth

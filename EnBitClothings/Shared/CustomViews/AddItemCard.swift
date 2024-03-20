@@ -5,25 +5,19 @@
 //  Created by Yashmi Aruksha on 2024-03-14.
 //
 
-
-import Foundation
 import SwiftUI
 import SDWebImageSwiftUI
 
 struct AddItemCard:View {
     
-    var cart:Item?
-    
+    var cart:Product?
     @State var ItemCount:Int
-    
     let action: ()->()?
-    
-    
     
     var body: some View{
         HStack{
-            if cart?.imageUrl != "" {
-                WebImage(url: URL(string: cart?.imageUrl ?? ""))
+            if cart?.images?.first?.url != "" {
+                WebImage(url: URL(string: cart?.images?.first?.url ?? ""))
                     .resizable()
                     .scaledToFit()
                     .frame(width: 100,height: 100)
@@ -41,7 +35,7 @@ struct AddItemCard:View {
             }
             VStack(alignment:.leading, spacing:0){
                 HStack {
-                    Text(cart?.itemTitle ?? "")
+                    Text(cart?.name ?? "")
                         .font(.customFont(.RobotoMedium, 14))
                     .lineLimit(1)
                     .padding(.trailing, 39)
@@ -57,7 +51,7 @@ struct AddItemCard:View {
                     .padding(.trailing,16)
 
                 }
-                Text("\(cart?.type ?? "N/A")")
+                Text("\(cart?.category?.category ?? "N/A")")
                     .font(.customFont(.RobotoMedium, 12))
                     .foregroundColor(Color.custom(._B4B4B4))
                     .frame(width: 100,height: 20,alignment: .leading)
@@ -68,8 +62,6 @@ struct AddItemCard:View {
                         .padding(.top, 24)
                         .padding(.bottom, 12)
                         .frame(maxWidth: .infinity,alignment: .leading)
-      
-                    
                 }
             } // : Vstack
             
@@ -78,17 +70,15 @@ struct AddItemCard:View {
         .background(Color.custom(._FFFFFF).opacity(0.13))
         .cornerRadius(10)
         .border(Color.black)
-        
-
     }
     
 }
 
-#Preview {
-    
-    AddItemCard(cart: Dummy.ItemData.first, ItemCount: 2) {
-        //
-    }
-    
-}
+//#Preview {
+//    
+//    AddItemCard(cart: Dummy.ItemData.first, ItemCount: 2) {
+//        
+//    }
+//    
+//}
 

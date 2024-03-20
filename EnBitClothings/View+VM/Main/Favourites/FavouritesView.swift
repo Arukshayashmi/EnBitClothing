@@ -30,15 +30,16 @@ struct FavouritesView: View {
                                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 16), count: 2)) {
                                     
                                     ForEach(Array(vm.ItemCards.enumerated()), id: \.offset) { index, card in
-                                        HomeItemCardView(itemCard: card, isFav: card.isFavourite ?? false, viewAction: {
+                                        HomeItemCardView(itemCard: card , isFav: card.isFavourite ?? false, viewAction: {
                                             vm.selectedItemCard = card
                                             vm.isActiveDetailsView = true
                                         }, addToFavAction: {
-                                                AddOrRemoveFavorites(itemId:card.id ?? "", favStatus: 1)
+                                            AddOrRemoveFavorites(itemId:card.id ?? "", favStatus: 1)
                                         }, removeFromFavAction: {
                                             AddOrRemoveFavorites(itemId: card.id ?? "", favStatus: 0)
                                         })
-                                    }
+                                }
+                                
                                 }
                                 .overlay(
                                     //: Need for auto hiding TabBar
