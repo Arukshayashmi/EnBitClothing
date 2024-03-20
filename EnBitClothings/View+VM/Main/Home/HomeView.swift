@@ -39,36 +39,35 @@ struct HomeView: View {
                         .submitLabel(.search)
                         
                     }// : HStack
+                    
+                    VStack(alignment: .leading){
+                        Text("Discover Items")
+                            .font(.customFont(.RobotoMedium, 16))
+                            .padding(.top, 16)
+                            .padding(.leading, 9)
+                            .foregroundColor(Color.custom(._E2E2E2))
+                        ScrollView(.horizontal, showsIndicators: false){
+                            HStack{
+                                CategoryButton(categoryName: "All", categoryId: "", selectedCategoryId: $selectedCategoryId, action: {
+                                    selectedCategoryId = ""
+                                    print(selectedCategoryId)
+                                    getItemCards(categoryId: "", q: vm.searchText)
+                                })
+                                
+                                ForEach(Array($vm.ItemCategories.enumerated()), id: \.offset) { index, $item in
+                                    CategoryButton(categoryName: item.category ?? "", categoryId: item.id ?? "", selectedCategoryId: $selectedCategoryId, action: {
+                                        selectedCategoryId = item.id ?? ""
+                                        print(selectedCategoryId)
+                                        getItemCards(categoryId: String(selectedCategoryId), q: vm.searchText)
+                                    })
+                                }
+                            } // : HStack
+                            .padding(.bottom, 16)
+                        } // : ScrollView
+                    }//:VStack
+                    
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 0){
-                            
-                            VStack(alignment: .leading){
-                                Text("Discover Items")
-                                    .font(.customFont(.RobotoMedium, 16))
-                                    .padding(.top, 16)
-                                    .padding(.leading, 9)
-                                    .foregroundColor(Color.custom(._E2E2E2))
-                                ScrollView(.horizontal, showsIndicators: false){
-                                    HStack{
-                                        CategoryButton(categoryName: "All", categoryId: "", selectedCategoryId: $selectedCategoryId, action: {
-                                            selectedCategoryId = ""
-                                            print(selectedCategoryId)
-                                            getItemCards(categoryId: "", q: vm.searchText)
-                                        })
-                                        
-                                        ForEach(Array($vm.ItemCategories.enumerated()), id: \.offset) { index, $item in
-                                            CategoryButton(categoryName: item.category ?? "", categoryId: item.id ?? "", selectedCategoryId: $selectedCategoryId, action: {
-                                                selectedCategoryId = item.id ?? ""
-                                                print(selectedCategoryId)
-                                                getItemCards(categoryId: String(selectedCategoryId), q: vm.searchText)
-                                            })
-                                        }
-                                    } // : HStack
-                                    .padding(.bottom, 16)
-                                } // : ScrollView
-                            }//:HStack
-                            
-                            
                             if !vm.ItemCards.isEmpty {
                                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 2)) {
                                     

@@ -43,7 +43,7 @@ struct CartView: View {
                                         
                                         AddItemCard(cart: item.productDetails , ItemCount: vm.cartItemCount) {
                                             // Cart remove action
-                                            vm.selectedCartItem = item
+                                            removeItems(productId: item.id ?? "")
                                         }
                                     }
                                 }
@@ -66,7 +66,7 @@ struct CartView: View {
                             .padding(.bottom,32)
                             .sheet(isPresented: $sheetVisible) {
                                 CustomCardSelectView(action: {
-                                    // api call
+                                    payForItems(productId: vm.selectedCartItem?.productDetails?.id ?? "")
                                 })
                                 .background(Color.custom(._1B1A2B))
                                 .presentationDetents([.medium, .large])
@@ -130,6 +130,34 @@ struct CartView: View {
                     showErrorLogger(message:  "cart data get Error !")
                 }
             }
+    }
+    
+    func removeItems(productId: String){
+        //MARK: - Remove CARDS API CALL
+        self.startLoading()
+        vm.processWithRemoveItem(productId: productId) { success, _  in
+            self.stopLoading()
+            if success{
+                getAllCartItems()
+                showSuccessLogger(message: "cart Item remove success !")
+            }else{
+                showErrorLogger(message:  "cart Item remove Error !")
+            }
+        }
+    }
+    
+    func payForItems(productId: String){
+        //MARK: - GET ITEM CARDS API CALL
+        self.startLoading()
+        vm.processWithPayForItem(productId: productId) { success, _  in
+            self.stopLoading()
+            if success{
+                getAllCartItems()
+                showSuccessLogger(message: "cart data get success !")
+            }else{
+                showErrorLogger(message:  "cart data get Error !")
+            }
+        }
     }
     
 }

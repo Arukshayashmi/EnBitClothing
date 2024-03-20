@@ -59,6 +59,8 @@ extension CartVM {
         // Prepare the endpoint
         let endpoint = "/checkout/getall"
         
+        self.cartItems.removeAll()
+        
         // Make the request with JSON encoding
         AFWrapper.shared.request(endpoint, method: .get, encoding: URLEncoding.default, success: { (response: CartResponse) in
             guard let cartModel = response.checkoutProducts else {
@@ -68,7 +70,64 @@ extension CartVM {
             
             self.cartItems = cartModel
             
-            completion(true, "Sucess Categories Getting..")
+            completion(true, "Sucess Items Getting..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
+    }
+}
+
+//MARK: - REMOVE ITEM FUNCATION
+extension CartVM {
+    func processWithRemoveItem(productId: String, completion: @escaping CompletionHandler) {
+        // check internet connection
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline. ")
+            return
+        }
+        
+        // Prepare the endpoint
+        let endpoint = "/checkout/\(productId)"
+        
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .delete, encoding: URLEncoding.default, success: { (response: CartResponse) in
+            
+            completion(true, "Sucess Remove Item..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
+    }
+}
+
+
+//MARK: - PAY FOR ITEM FUNCATION
+extension CartVM {
+    func processWithPayForItem(productId: String, completion: @escaping CompletionHandler) {
+        // check internet connection
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline. ")
+            return
+        }
+        
+        // Prepare the endpoint
+        let endpoint = "/checkout/paid"
+        
+        let parameters: [String: Any] = [
+            "productId": productId
+        ]
+        
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .put, parameters: parameters, success: { (response: CartResponse) in
+            
+            completion(true, "Sucess Paid for Item..")
         }, failure: { error in
             if let afError = error as? AFWrapperError {
                 completion(false, afError.errorMessage)

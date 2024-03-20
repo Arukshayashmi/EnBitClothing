@@ -17,7 +17,6 @@ extension ContactUsVM{
     func proceesdSendMessage(completion: @escaping (_ status: Bool) -> ()){
         //: Check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
             completion(false)
             return
         }

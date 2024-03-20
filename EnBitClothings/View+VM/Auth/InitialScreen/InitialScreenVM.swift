@@ -19,7 +19,6 @@ extension InitialScreenVM{
     func proceedGuestAPi(completion : @escaping (_ status: Bool) -> ()?){
         // Check internet connection
         guard Reachability.isInternetAvailable() else {
-            showNoInternetAlert()
             completion(false)
             return
         }
@@ -49,8 +48,6 @@ extension InitialScreenVM{
         guard let token = url.components(separatedBy: "/").last else{
             return
         }
-
-//        iBSUserDefaults.setGiftToken(token: token)
     }
 }
 

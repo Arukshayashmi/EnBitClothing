@@ -1,5 +1,5 @@
 //
-//  AddGiftCard.swift
+//  AddItemCard.swift
 //  EnBitClothings
 //
 //  Created by Yashmi Aruksha on 2024-03-14.
@@ -57,7 +57,7 @@ struct AddItemCard:View {
                     .frame(width: 100,height: 20,alignment: .leading)
 
                 HStack {
-                    Text("LKR\(cart?.price ?? 0, specifier: "%.2f")")
+                    Text("LKR\(cart?.price ?? 0).00")
                         .font(.customFont(.RobotoMedium, 16))
                         .padding(.top, 24)
                         .padding(.bottom, 12)

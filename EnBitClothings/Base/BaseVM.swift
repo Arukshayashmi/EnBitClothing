@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftyJSON
+//import SwiftyJSON
 import Alamofire
 import UIKit
 
@@ -18,64 +18,6 @@ class BaseVM: NSObject, ObservableObject, LoadingIndicatorDelegate {
     @Published var alertMessage = ""
     @Published var alertTitle = ""
     
-}
-
-extension BaseVM {
-    func handleErrorResponse(_ error: Error?, completion: CompletionHandlerBaseVM) {
-        if let errorResponse = error as? ErrorResponse {
-            switch errorResponse {
-            case .error(let statusCode, let data, let error):
-                if let responseData = data {
-                    let errorJson = JSON(responseData)
-                    
-                    if let message = errorJson["message"].string {
-                        print("error: \(message), code: \(statusCode)")
-                        completion(false, statusCode, message)
-                    } else {
-                        print("error: \(error.localizedDescription) , code: \(statusCode)")
-                        completion(false, statusCode, error.localizedDescription)
-                    }
-                } else if let errorResponse = error as? AFError {
-                    switch errorResponse {
-                    case .invalidURL(let url):
-                        print("Error in URL: \(url)")
-                        completion(false, errorResponse.responseCode ?? 500, errorResponse.errorDescription ?? errorResponse.localizedDescription)
-                    default:
-                        print("error: \(errorResponse.errorDescription ?? errorResponse.localizedDescription), code: \(statusCode)")
-                        completion(false, errorResponse.responseCode ?? 500, errorResponse.errorDescription ?? errorResponse.localizedDescription)
-                    }
-                }
-            }
-        } else if let errorResponse = error as? DecodingError {
-            switch errorResponse {
-            case .typeMismatch(let type, let context):
-                print("Type '\(type)' mismatch: \(context.codingPath)" )
-                completion(false, 422, context.debugDescription)
-            default:
-                completion(false, 422, error?.localizedDescription ?? .ErrorCorrupted)
-            }
-        }
-    }
-    
-}
-
-//MARK:- Alert
-extension BaseVM {
-    func handleErrorAndShowAlert(error: Error?) {
-        self.handleErrorResponse(error) { (status, statusCode, message) in
-            self.alertTitle = "Error"
-            self.alertMessage = message
-            self.stopLoading()
-            self.isShowAlert = true
-            return
-        }
-    }
-    
-    func showNoInternetAlert() {
-        self.alertTitle = .Error
-        self.alertMessage = .NoInternet
-        self.isShowAlert = true
-    }
 }
 
 
@@ -122,6 +64,7 @@ extension BaseVM {
         return imageURL
     }
 }
+
 
 extension BaseVM{
     func convertStringToDate(_ dateString: String, format: String) -> Date? {
