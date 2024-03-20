@@ -3,41 +3,42 @@
 // DropDownField.swift
 //  EnBitClothings
 //
-//  Created by Yashmi Aruksha on 2024-03-13.
+//  Created by Yashmi Aruksha on 2024-03-20.
 //
-
-
 
 import SwiftUI
 
-struct DropDownField: View {
+struct CategoriesDropDownField: View {
     
-    
-    @Binding var text: String
+    @Binding var selectedCategoryId: String
     var sectionHeader: String
     var placeholderText: String
-    @Binding var values: [String]
+    
+    @Binding var values: [Categories]
+    
+    @State private var selectedCategoryName: String = ""
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(sectionHeader)
                 .font(.custom("Roboto-Regular", size: 14))
-                .foregroundColor(Color.custom(._FFFFFF))
+                .foregroundColor(Color.white)
                 .padding(.bottom, 6)
             
             HStack {
-                TextField("", text: $text)
-                    .disabled(true)
-                    .placeholder(when: text.isEmpty) {
-                        Text(placeholderText)
-                            .font(.custom("Roboto-Regular", size: 14))
-                            .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
-                    }
+                Text(selectedCategoryName.isEmpty ? placeholderText : selectedCategoryName)
+                    .font(.custom("Roboto-Regular", size: 14))
+                    .foregroundColor(selectedCategoryName.isEmpty ? Color.white.opacity(0.5) : Color.white)
+                
+                Spacer()
                 
                 Menu {
-                    Picker("",selection: $text) {
-                        ForEach(values, id: \.self) {
-                            Text($0)
+                    ForEach(values, id: \.id) { category in
+                        Button(action: {
+                            self.selectedCategoryId = category.id ?? ""
+                            self.selectedCategoryName = category.category ?? ""
+                        }) {
+                            Text(category.category ?? "Unknown")
                         }
                     }
                 } label: {
@@ -56,6 +57,10 @@ struct DropDownField: View {
             .background(Color.custom(._FFFFFF).opacity(0.13))
             .cornerRadius(10)
         }
+        .onAppear {
+            if let selectedCategory = values.first(where: { $0.id == selectedCategoryId }) {
+                selectedCategoryName = selectedCategory.category ?? ""
+            }
+        }
     }
 }
-

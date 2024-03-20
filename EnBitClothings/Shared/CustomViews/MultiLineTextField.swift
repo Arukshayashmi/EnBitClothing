@@ -18,7 +18,8 @@ struct MultiLineInputTextField: View {
                 .font(.customFont(.RobotoRegular, 14))
             ZStack(alignment: .topLeading) {
                 if text.isEmpty {
-                    Text(placeHolder)                        
+                    Text(placeHolder) 
+                        .font(.system(size: 16))
                         .foregroundColor(.gray)
                         .padding(.horizontal, 16)
                         .padding(.top, 16)
@@ -30,7 +31,7 @@ struct MultiLineInputTextField: View {
                     .padding(.top, 12)
                     .padding(.bottom, 12)
                     .background(Color.custom(._FFFFFF).opacity(0.13))
-                    .frame(height: 100)
+//                    .frame(height: 100)
                     .cornerRadius(10)
                     .withBaseViewMod()
             }

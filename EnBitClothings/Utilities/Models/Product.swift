@@ -27,7 +27,7 @@ public struct Product: Codable {
     public let id, name, description: String?
     public let price: Int?
     public let category: Category?
-    public let images: [Images]?
+    public let images: Images?
     public let createdAt, updatedAt: String?
     public let isFavourite: Bool?
     
@@ -37,7 +37,7 @@ public struct Product: Codable {
         case isFavourite
     }
     
-    public init(id: String?, name: String?, description: String?, price: Int?, category: Category?, images: [Images]?, createdAt: String?, updatedAt: String?, isFavourite: Bool?) {
+    public init(id: String?, name: String?, description: String?, price: Int?, category: Category?, images: Images?, createdAt: String?, updatedAt: String?, isFavourite: Bool?) {
         self.id = id
         self.name = name
         self.description = description
@@ -65,21 +65,18 @@ public struct Category: Codable {
     }
 }
 
-// MARK: - Image
+// MARK: - Images
 public struct Images: Codable {
     public let publicID: String?
     public let url: String?
-    public let id: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case publicID = "public_id"
         case url
-        case id = "_id"
     }
-    
-    public init(publicID: String?, url: String?, id: String?) {
+
+    public init(publicID: String?, url: String?) {
         self.publicID = publicID
         self.url = url
-        self.id = id
     }
 }

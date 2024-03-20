@@ -49,11 +49,14 @@ struct ImagePlaceholder: View {
                         .padding(.horizontal, 169)
                         .padding(.vertical, 42)
                         .foregroundColor(Color.custom(._FFFFFF).opacity(0.75))
+                        .background(Color.custom(._6347F3).cornerRadius(14))
                         .overlay(progress)
                 }
                 .resizable()
                 .indicator(.activity)
+                .frame(width: UIScreen.screenWidth * 0.9, height: 150)
                 .aspectRatio(contentMode: .fill)
+                .cornerRadius(cornerRadius)
                 .shadow(radius: 0.5)
         }
     }
@@ -74,7 +77,9 @@ struct ImagePlaceholder: View {
     
 }
 
-
+#Preview {
+    AddItemView()
+}
 
 
 

@@ -20,6 +20,9 @@ struct TabBarView: View {
 
                 case .favourites:
                     FavouritesView(hideTabBar: $hideBar)
+                    
+                case .addItem:
+                    AddItemView()
 
                 case .cart:
                     CartView(hideTabBar: $hideBar)
@@ -52,7 +55,7 @@ class TabBarVM: ObservableObject {
 
 
 enum UserTabType {
-    case homeView, favourites, cart, more
+    case homeView, favourites, addItem, cart, more
 }
 
 
@@ -76,16 +79,26 @@ private struct TabBar: View {
             TabBarButton(
                 item: .favourites,
                 image: "icon.heart",
-                title: "Favourites"
+                title: "Favourite"
             )
             .onTapGesture {
                 vm.selectedTab = .favourites
             }
             Spacer()
             TabBarButton(
+                item: .addItem,
+                image: "icon.plus",
+                title: "",
+                isAddItem: true
+            )
+            .onTapGesture {
+                vm.selectedTab = .addItem
+            }
+            Spacer()
+            TabBarButton(
                 item: .cart,
                 image: "icon.cart",
-                title: "Cart"
+                title: "My Cart"
             )
             .onTapGesture {
                 vm.selectedTab = .cart
@@ -116,18 +129,30 @@ private struct TabBarButton: View {
     @State var item: UserTabType
     var image: String
     var title: String
+    var isAddItem: Bool = false
     
     var body: some View {
-        VStack {
+        if isAddItem == false {
+            VStack {
+                Image(image)
+                    .resizable()
+                    .scaledToFit()
+                    .aspectRatio(contentMode: .fit)
+                    .frame( height: 28)
+                Text(title)
+                    .font(.customFont(.RobotoMedium, 10))
+            }//:VStack
+            .foregroundColor(vm.selectedTab == item ? .custom(._FFFFFF) : .custom(._FFFFFF).opacity(0.40))
+        } else {
             Image(image)
                 .resizable()
                 .scaledToFit()
                 .aspectRatio(contentMode: .fit)
                 .frame( height: 28)
-            Text(title)
-                .font(.customFont(.RobotoMedium, 10))
-        }//:VStack
-        .foregroundColor(vm.selectedTab == item ? .custom(._FFFFFF) : .custom(._FFFFFF).opacity(0.40))
+                .foregroundColor(vm.selectedTab == item ? .custom(._FFFFFF) : .custom(._FFFFFF).opacity(0.5))
+                .background(Color.custom(._6347F3).frame(width: 50,height: 50).cornerRadius(14))
+                .padding(.bottom, 10)
+        }
     }
 }
 

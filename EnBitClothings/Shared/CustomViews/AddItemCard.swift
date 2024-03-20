@@ -16,8 +16,8 @@ struct AddItemCard:View {
     
     var body: some View{
         HStack{
-            if cart?.images?.first?.url != "" {
-                WebImage(url: URL(string: cart?.images?.first?.url ?? ""))
+            if cart?.images?.url != "" {
+                WebImage(url: URL(string: cart?.images?.url ?? ""))
                     .resizable()
                     .scaledToFit()
                     .frame(width: 100,height: 100)
@@ -57,7 +57,7 @@ struct AddItemCard:View {
                     .frame(width: 100,height: 20,alignment: .leading)
 
                 HStack {
-                    Text("LKR\(cart?.price ?? 0).00")
+                    Text("LKR \(formatNumber(number: Double(cart?.price ?? 0)))")
                         .font(.customFont(.RobotoMedium, 16))
                         .padding(.top, 24)
                         .padding(.bottom, 12)

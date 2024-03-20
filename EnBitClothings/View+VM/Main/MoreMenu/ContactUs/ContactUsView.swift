@@ -27,6 +27,7 @@ struct ContactUsView: View {
                         Text("Get in touch and we’ll get back to you.")
                             .padding(.bottom, 44)
                         MultiLineInputTextField(text: $vm.message, placeHolder: "Maximum 400 characters", sectionHeader: "Message")
+                            .frame(height: 200)
                             .padding(.bottom, 24)
                         CommenButton(buttonTitle: "Submit", buttonWidth: 220, isFilled: true) {
                             contactUsAPICall()

@@ -53,8 +53,8 @@ struct HomeItemCardView:View {
                 }
             } // : HStack
             
-            if (itemCard?.images?.first?.url) != "" {
-                WebImage(url: URL(string: itemCard?.images?.first?.url ?? ""))
+            if (itemCard?.images?.url) != "" {
+                WebImage(url: URL(string: itemCard?.images?.url ?? ""))
                     .resizable()
 //                    .scaledToFit()
                     .cornerRadius(8)

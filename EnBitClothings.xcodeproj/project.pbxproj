@@ -111,6 +111,9 @@
 		9C1A3BB92BA9B4CC003BC947 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1A3BB82BA9B4CC003BC947 /* Card.swift */; };
 		9C1A3BBB2BA9BF99003BC947 /* Favourites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1A3BBA2BA9BF99003BC947 /* Favourites.swift */; };
 		9C4AC4D52BA9F763006C6D21 /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4AC4D42BA9F763006C6D21 /* Cart.swift */; };
+		9C4AC4D82BAAE53B006C6D21 /* AddItemVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4AC4D72BAAE53B006C6D21 /* AddItemVM.swift */; };
+		9C4AC4DA2BAAE548006C6D21 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4AC4D92BAAE548006C6D21 /* AddItemView.swift */; };
+		9C4AC4DC2BAB388B006C6D21 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4AC4DB2BAB388B006C6D21 /* Images.swift */; };
 		9C9B73EF2BA7B09300A18A50 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9C9B73EE2BA7B09300A18A50 /* Alamofire */; };
 		9C9B73F12BA7B09300A18A50 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 9C9B73F02BA7B09300A18A50 /* AlamofireDynamic */; };
 		9CEBC1562BA6A2B3004E9719 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC1512BA6A2B2004E9719 /* Reachability.swift */; };
@@ -238,6 +241,9 @@
 		9C1A3BB82BA9B4CC003BC947 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		9C1A3BBA2BA9BF99003BC947 /* Favourites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favourites.swift; sourceTree = "<group>"; };
 		9C4AC4D42BA9F763006C6D21 /* Cart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
+		9C4AC4D72BAAE53B006C6D21 /* AddItemVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemVM.swift; sourceTree = "<group>"; };
+		9C4AC4D92BAAE548006C6D21 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
+		9C4AC4DB2BAB388B006C6D21 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		9CEBC1512BA6A2B2004E9719 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		9CEBC1522BA6A2B2004E9719 /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		9CEBC15B2BA6AC15004E9719 /* iBSUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iBSUserDefaults.swift; sourceTree = "<group>"; };
@@ -370,6 +376,7 @@
 				84E4267C2BA2130C0057C72F /* TabBar.swift */,
 				84E6D92D2BA2E57600377EE4 /* Home */,
 				84E6D9242BA2E34600377EE4 /* Favourites */,
+				9C4AC4D62BAAE518006C6D21 /* AddItem */,
 				84E6D96A2BA311F800377EE4 /* Cart */,
 				84E6D8BA2BA2D46E00377EE4 /* MoreMenu */,
 			);
@@ -586,6 +593,7 @@
 				9C1A3BBA2BA9BF99003BC947 /* Favourites.swift */,
 				9C4AC4D42BA9F763006C6D21 /* Cart.swift */,
 				9C1A3BB82BA9B4CC003BC947 /* Card.swift */,
+				9C4AC4DB2BAB388B006C6D21 /* Images.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -753,6 +761,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		9C4AC4D62BAAE518006C6D21 /* AddItem */ = {
+			isa = PBXGroup;
+			children = (
+				9C4AC4D92BAAE548006C6D21 /* AddItemView.swift */,
+				9C4AC4D72BAAE53B006C6D21 /* AddItemVM.swift */,
+			);
+			path = AddItem;
+			sourceTree = "<group>";
+		};
 		9CEBC1502BA6A2B2004E9719 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -900,6 +917,7 @@
 				845DD3EF2BA2C20A0073E78F /* ImagePlaceholder.swift in Sources */,
 				84E6D90B2BA2D46E00377EE4 /* TermsAndConditionsView.swift in Sources */,
 				84E6D8F82BA2D46E00377EE4 /* MoreMenuVM.swift in Sources */,
+				9C4AC4D82BAAE53B006C6D21 /* AddItemVM.swift in Sources */,
 				84E6D9172BA2D46E00377EE4 /* PrivacyPolicyView.swift in Sources */,
 				84E4264E2BA2023E0057C72F /* ViewExtension.swift in Sources */,
 				9CEBC15D2BA6AC16004E9719 /* iBSUserDefaults.swift in Sources */,
@@ -927,6 +945,7 @@
 				84E6D9162BA2D46E00377EE4 /* PrivacyPolicyVM.swift in Sources */,
 				84E4266B2BA20EF70057C72F /* EmailField.swift in Sources */,
 				84E6D9782BA3135800377EE4 /* SavedCardView.swift in Sources */,
+				9C4AC4DC2BAB388B006C6D21 /* Images.swift in Sources */,
 				84E426032BA1ED2B0057C72F /* BaseVM.swift in Sources */,
 				845DD3F02BA2C20A0073E78F /* Slider.swift in Sources */,
 				84E426472BA1F9DD0057C72F /* ForgotPasswordSuccess.swift in Sources */,
@@ -962,6 +981,7 @@
 				84E6D90A2BA2D46E00377EE4 /* ChangePasswordVM.swift in Sources */,
 				84E6D9522BA2E57600377EE4 /* HomeView.swift in Sources */,
 				84E6D90F2BA2D46E00377EE4 /* ContactUsVM.swift in Sources */,
+				9C4AC4DA2BAAE548006C6D21 /* AddItemView.swift in Sources */,
 				84E6D8FB2BA2D46E00377EE4 /* AboutUsVM.swift in Sources */,
 				84E6D9652BA2E73D00377EE4 /* Categories.swift in Sources */,
 				84E426202BA1F2010057C72F /* LoadingDelegate.swift in Sources */,

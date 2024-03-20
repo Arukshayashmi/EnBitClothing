@@ -51,6 +51,7 @@ struct OTPView: View {
                 .focused($isKeyboardShowing)
                 .keyboardType(.numberPad)
                 .textContentType(.oneTimeCode)
+                .withBaseViewMod()
         )
         //.contentShape(Rectangle())
         .onTapGesture {

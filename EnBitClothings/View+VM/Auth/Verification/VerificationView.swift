@@ -17,7 +17,9 @@ struct VerificationView: View {
             Color.custom(._1B1A2B)
                 .ignoresSafeArea()
             VStack(alignment:.center){
-                NavigationBarWithRightButton(title: "Sign Up", isImage: false, actionRightButton: {})
+                NavigationBarWithRightButton(title: "Sign Up", placeholderText: "Logout", isImage: false,actionRightButton:{
+                    logoutAPiCall()
+                })
                 Text("Please enter your verification code")
                     .font(.custom("Roboto-Regular", size: 22))
                     .foregroundColor(Color.custom(._FFFFFF))
@@ -28,14 +30,9 @@ struct VerificationView: View {
                 
                 Text(vm.user?.email ?? "")
                 
-
                 
-                if #available(iOS 15.0, *) {
-                    OTPView(slotCount: 4, otpText: $vm.otpText)
-                } else {
-                    // Fallback on earlier versions
-                }
-               
+                OTPView(slotCount: 4, otpText: $vm.otpText)
+                
                 
                 CommenButton(buttonTitle: "Next", buttonWidth: 220, isFilled:true) {
                     oTPVerification()
@@ -54,7 +51,7 @@ struct VerificationView: View {
                             .foregroundColor(Color.custom(._6347F3))
                             .font(.customFont(.RobotoRegular, 14))
                     }
-
+                    
                 } // : HStack
                 .padding(.bottom, 20)
             } // : VStack
@@ -65,13 +62,30 @@ struct VerificationView: View {
             }
             .alert(isPresented: $vm.isShowAlert) {
                 Alert(
-                        title: Text(vm.alertTitle),
-                        message: Text(vm.alertMessage),
-                        dismissButton: .default(Text("OK"))
-                    )
+                    title: Text(vm.alertTitle),
+                    message: Text(vm.alertMessage),
+                    dismissButton: .default(Text("OK"))
+                )
             }
         } // : ZStack
         .navigationBarHidden(true)
+    }
+    
+    func logoutAPiCall(){
+        //MARK: - LOGOUT API CALL
+        self.startLoading()
+        vm.proceedLogoutAPi { status, _ in
+            self.stopLoading()
+            if status{
+                ViewRouter.shared.currentRoot = .initialScreen
+            }
+            print(" ❌ User Logout success ! ❌ ")
+        }
+        
+        //MARK: - CLEAN LOACL USER
+        PersistenceController.shared.deleteUserData()
+        
+        Authenticated.send(false)
     }
     
     func oTPVerification(){

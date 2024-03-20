@@ -22,21 +22,13 @@ class CompleteProfileVM:BaseVM {
     @Published var countryCode:String = ""
     @Published var phoneNumber:String = ""
     @Published var contactNumber:String = ""
-    @Published var showCountryPicker:Bool = false
     let phoneNumberKit = PhoneNumberKit()
-    
-    
-    
+
     var selectedDateString: String {
         dob.convertDateToString("yyyy-MM-dd")
     }
     
-    
     @Published var user : User?
-    
-    @Published var fieldOfState: [String] = ["New South Wales", "Queensland", "South Australia", "Tasmania", "Victoria", "Western Australia", "Australian Capital Territory", "Northern Territory"]
-    
-    @Published var isNavLicenseDetailsView:Bool = false
     
 }
 extension CompleteProfileVM {

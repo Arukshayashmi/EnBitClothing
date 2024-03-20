@@ -23,7 +23,7 @@ struct ItemDetailsView: View {
                     .padding(.bottom, 20)
                 
                     VStack(alignment:.leading, spacing: 0){                        
-                        WebImage(url: URL(string: vm.clothItem?.images?.first?.url ?? ""))
+                        WebImage(url: URL(string: vm.clothItem?.images?.url ?? ""))
                             .placeholder {
                                 Image("GiftPlaceHolder")
                                     .resizable()
