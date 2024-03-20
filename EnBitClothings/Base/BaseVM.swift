@@ -106,6 +106,9 @@ extension BaseVM {
             
             //MARK: - LOCAL USER DELETE
             PersistenceController.shared.deleteUserData()
+            iBSUserDefaults.authToken = ""
+            iBSUserDefaults.guest = false
+            iBSUserDefaults.isOnBoard = false
             
             completion(true, "Logout Success.")
         }, failure: { error in

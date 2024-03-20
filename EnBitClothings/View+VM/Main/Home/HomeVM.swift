@@ -56,6 +56,40 @@ extension HomeVM {
     }
 }
 
+//MARK: - GEST USER FUNCATION
+extension HomeVM {
+    func processWithGestUser(categoryId: String, q: String, completion: @escaping CompletionHandler) {
+        // check internet connection
+        guard Reachability.isInternetAvailable() else {
+            completion(false, "Internet connection appears to be offline. ")
+            return
+        }
+
+        // Prepare the endpoint
+        let endpoint = "/product/get-all-guest?q=\(q)&categoryId=\(categoryId)"
+        
+        self.ItemCards.removeAll()
+        
+        // Make the request with JSON encoding
+        AFWrapper.shared.request(endpoint, method: .get, encoding: URLEncoding.default, success: { (response: ProductResponse) in
+            guard let productModel = response.products else {
+                completion(false, "Product Model Missing..")
+                return
+            }
+            
+            self.ItemCards = productModel
+
+            completion(true, "Sucess Product Data Getting..")
+        }, failure: { error in
+            if let afError = error as? AFWrapperError {
+                completion(false, afError.errorMessage)
+            } else {
+                completion(false, error.localizedDescription)
+            }
+        })
+    }
+}
+
 //MARK: - GET ITEM CARDS FUNCATION
 extension HomeVM {
     func processWithItemCards(categoryId: String, q: String, completion: @escaping CompletionHandler) {

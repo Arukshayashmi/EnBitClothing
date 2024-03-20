@@ -109,6 +109,7 @@ struct SignInView: View {
                     ViewRouter.shared.currentRoot = .signUpVerify
                 }
                 iBSUserDefaults.isOnBoard = true
+                iBSUserDefaults.guest = false
                 showSuccessLogger(message: "Sign In Success")
             } else {
                 showErrorLogger(message: "Sign In Error")

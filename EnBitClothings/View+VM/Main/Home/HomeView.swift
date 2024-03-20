@@ -167,8 +167,9 @@ struct HomeView: View {
     
     func getItemCards(categoryId:String = "", q:String = ""){
         //MARK: - GET ITEM CARDS API CALL
-        if navigationTitle == "Home" {
-            self.startLoading()
+        self.startLoading()
+        
+        if iBSUserDefaults.guest == false {
             vm.processWithItemCards(categoryId: categoryId, q: q) { success, _  in
                 self.stopLoading()
                 if success{
@@ -177,7 +178,17 @@ struct HomeView: View {
                     showErrorLogger(message:  "clothItem card data get Error !")
                 }
             }
+        } else {
+            vm.processWithGestUser(categoryId: categoryId, q: q) { success, _  in
+                self.stopLoading()
+                if success{
+                    showSuccessLogger(message: "guest user clothItem card data get success !")
+                }else{
+                    showErrorLogger(message:  "guest user clothItem card data get Error !")
+                }
+            }
         }
+        
     }
     
     

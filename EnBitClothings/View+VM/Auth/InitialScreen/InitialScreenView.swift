@@ -27,9 +27,8 @@ struct InitialScreenView: View {
                 .padding(.bottom, UIScreen.screenHeight * 0.25)
                 
                 Button {
-                    guestAPiCall()
                     vm.exploreAsGuest = true
-
+                    iBSUserDefaults.guest = true
                     
                 } label: {
                     Text("Explore as Guest")
@@ -46,11 +45,9 @@ struct InitialScreenView: View {
                 } // : HStack
                 .padding(.bottom, 45)
                 
-                
             }// : VStack
             .foregroundColor(Color.custom(._FFFFFF))
             .font(.custom("Roboto-Medium", size: 14))
-            
             
         }// : ZStack
         .navigationBarHidden(true)
@@ -61,25 +58,6 @@ struct InitialScreenView: View {
                 NavigationLink(destination: TabBarView(vm: TabBarVM(selectedTab: .homeView)),isActive: $vm.exploreAsGuest, label: {})
             }
         )
-        .onOpenURL(perform: { url in
-            self.vm.handleItemUrl(url: url.absoluteString)
-            self.vm.signUpAction.toggle()
-        })
-    }
-    func guestAPiCall(){
-        
-//        self.startLoading()
-        
-        vm.proceedGuestAPi { status in
-
-            self.stopLoading()
-            if status{
-                print("Guest Login Success")
-//                vm.exploreAsGuest = true
-            }else {
-                print("Guest Login Error")
-            }
-        }
     }
 }
 

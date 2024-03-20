@@ -22,32 +22,7 @@ struct ItemDetailsView: View {
                 NavigationBarWithBackButton(title: vm.clothItem?.name ?? "")
                     .padding(.bottom, 20)
                 
-                    VStack(alignment:.leading, spacing: 0){
-                        // for multiple image set
-//                        ZStack {
-//                            TabView(selection : $vm.currentPage){
-//                                ForEach(0..<vm.imageNames.count){ i in
-//                                    Image(vm.imageNames[i])
-//                                        .resizable()
-//                                        .scaledToFit()
-//                                        .frame(width:343, height: 294)
-//                                        .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
-//                                }
-//                            }
-//                            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-//                            .frame(height: 294)
-//                            HStack(spacing:10){
-//                                ForEach(vm.imageNames.indices, id: \.self) {index in
-//                                    Circle()
-//                                        .foregroundColor(Color.custom(._FFFFFF))
-//                                        .opacity(index == vm.currentPage ? 1 : 0.3)
-//                                        .frame(height: 10)
-//                                }
-//                            }// : HStack
-//                            .padding(.top, 268)
-//                            .padding(.bottom, 18)
-//                        } // : ZStack
-                        
+                    VStack(alignment:.leading, spacing: 0){                        
                         WebImage(url: URL(string: vm.clothItem?.images?.first?.url ?? ""))
                             .placeholder {
                                 Image("GiftPlaceHolder")
@@ -74,36 +49,40 @@ struct ItemDetailsView: View {
                         Text("LKR \(formatNumber(number: Double(vm.clothItem?.price ?? 0)))")
                             .padding(.leading, 16)
                             .padding(.bottom, 13)
-                        HStack {
-                            CommenButton(buttonTitle: "Add to cart", buttonWidth: 271, isFilled: true) {
-                                AddToCart(itemId: vm.clothItem?.id ?? "")
-                            }
-                            .padding(.leading, 16)
-                            
-                            Button {
-                                if isFav == false {
-                                    isFav = true
-                                    AddOrRemoveFavorites(itemId: vm.clothItem?.id ?? "", favStatus: 1)
-                                } else {
-                                    isFav = false
-                                    AddOrRemoveFavorites(itemId: vm.clothItem?.id ?? "", favStatus: 0)
+                        
+                        if iBSUserDefaults.guest == false {
+                            HStack {
+                                CommenButton(buttonTitle: "Add to cart", buttonWidth: 271, isFilled: true) {
+                                    AddToCart(itemId: vm.clothItem?.id ?? "")
                                 }
+                                .padding(.leading, 16)
                                 
-                            } label: {
-                                Image(isFav ? "icon.heart" : "icon.heartBorder")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .foregroundColor(Color.custom(._6347F3))
-                                    .frame(height: 22)
-                                    .padding(.trailing, 12)
-                                    .padding(.top, 6)
-                                    .padding(.bottom, 3)
-                            }
-                            .padding(.leading, 16)
-                        } // : HStack
-                        .padding(.bottom, 16)
+                                Button {
+                                    if isFav == false {
+                                        isFav = true
+                                        AddOrRemoveFavorites(itemId: vm.clothItem?.id ?? "", favStatus: 1)
+                                    } else {
+                                        isFav = false
+                                        AddOrRemoveFavorites(itemId: vm.clothItem?.id ?? "", favStatus: 0)
+                                    }
+                                    
+                                } label: {
+                                    Image(isFav ? "icon.heart" : "icon.heartBorder")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .foregroundColor(Color.custom(._6347F3))
+                                        .frame(height: 22)
+                                        .padding(.trailing, 12)
+                                        .padding(.top, 6)
+                                        .padding(.bottom, 3)
+                                }
+                                .padding(.leading, 16)
+                            } // : HStack
+                            .padding(.bottom, 16)
+                        }
+                        
                     } // : VStack Item detail card
-                    .frame(height: 450)
+//                    .frame(height: 450)
                     .background(Color.custom(._FFFFFF).opacity(0.13))
                     .cornerRadius(14)
                     

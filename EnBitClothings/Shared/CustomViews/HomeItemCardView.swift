@@ -30,24 +30,26 @@ struct HomeItemCardView:View {
                 
                 Spacer()
                 
-                Button {
-                    if isFav == false {
-                        isFav = true
-                        addToFavAction?()
-                    } else {
-                        isFav = false
-                        removeFromFavAction?()
+                if iBSUserDefaults.guest == false {
+                    Button {
+                        if isFav == false {
+                            isFav = true
+                            addToFavAction?()
+                        } else {
+                            isFav = false
+                            removeFromFavAction?()
+                        }
+                        
+                    } label: {
+                        Image(isFav ? "icon.heart" : "icon.heartBorder")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(Color.custom(._6347F3))
+                            .frame(height: 22)
+                            .padding(.trailing, 12)
+                            .padding(.top, 12)
+                            .padding(.bottom, 3)
                     }
-                    
-                } label: {
-                    Image(isFav ? "icon.heart" : "icon.heartBorder")
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(Color.custom(._6347F3))
-                        .frame(height: 22)
-                        .padding(.trailing, 12)
-                        .padding(.top, 12)
-                        .padding(.bottom, 3)
                 }
             } // : HStack
             

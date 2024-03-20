@@ -98,6 +98,7 @@ struct SignUpView: View {
         vm.proceedWithSignUp(email: vm.email, password: vm.password){ success, _ in
             if success{
                 iBSUserDefaults.isOnBoard = true
+                iBSUserDefaults.guest = false
                 ViewRouter.shared.currentRoot = .signUpVerify
                 showSuccessLogger(message: "Register Success..")
                 stopLoading()

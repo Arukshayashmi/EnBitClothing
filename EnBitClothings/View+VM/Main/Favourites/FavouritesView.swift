@@ -85,7 +85,19 @@ struct FavouritesView: View {
                 .onAppear{
                     //API Call for get favourite clothItem cards
                     self.getFavouriteItemCards()
+                    if iBSUserDefaults.guest == true {
+                        vm.isShowAlert = true
+                    }
                 }
+                .alert(isPresented: $vm.isShowAlert, content: {
+                    Alert(
+                        title: Text("Alert"),
+                        message: Text("Please Register or Login first!"),
+                        primaryButton: .destructive(Text("Cancel")) {},
+                        secondaryButton: .cancel(Text("Login")){
+                            ViewRouter.shared.currentRoot = .signIn
+                        })
+                })
             } //: Geometry
         } //: ZStack
         .navigationBarHidden(true)

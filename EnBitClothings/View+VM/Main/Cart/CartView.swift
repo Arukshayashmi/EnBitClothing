@@ -113,7 +113,19 @@ struct CartView: View {
             )
             .onAppear{
                 getAllCartItems()
+                if iBSUserDefaults.guest == true {
+                    vm.isShowAlert = true
+                }
             }
+            .alert(isPresented: $vm.isShowAlert, content: {
+                Alert(
+                    title: Text("Alert"),
+                    message: Text("Please Register or Login first!"),
+                    primaryButton: .destructive(Text("Cancel")) {},
+                    secondaryButton: .cancel(Text("Login")){
+                        ViewRouter.shared.currentRoot = .signIn
+                    })
+            })
             
         } // : ZStack
         .navigationBarHidden(true)

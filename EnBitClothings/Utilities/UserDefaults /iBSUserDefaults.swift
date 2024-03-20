@@ -14,12 +14,15 @@ struct iBSUserDefaults {
     static var isOnBoard: Bool
     @UserDefault(UserDefaultsKeys.authToken, defaultValue: "")
     static var authToken: String
+    @UserDefault(UserDefaultsKeys.guest, defaultValue: false)
+    static var guest: Bool
 }
 
 struct UserDefaultsKeys {
     static let user = "USER"
     static let isOnboard = "IS_ONBOARD"
     static let authToken = "AUTH_TOKEN"
+    static let guest = "GUEST"
 }
 
 @propertyWrapper
