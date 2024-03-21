@@ -49,7 +49,7 @@ struct MoreMenuView: View {
                                         Spacer()
                                     }// HStack
                                     .frame(height: 48)
-                                        .background(Color.custom(._FFFFFF).opacity(0.13))
+                                        .background(Color.custom(._FFFFFF).opacity(0.2))
                                     .cornerRadius(14)
                                 }
 
@@ -108,7 +108,7 @@ struct MoreMenuView: View {
                         Spacer()
                     }// HStack
                     .frame(height: 48)
-                        .background(Color.custom(._FFFFFF).opacity(0.13))
+                        .background(Color.custom(._FFFFFF).opacity(0.2))
                     .cornerRadius(14)
                     .padding(.bottom, 42)
                         

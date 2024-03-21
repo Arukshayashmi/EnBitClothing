@@ -31,7 +31,7 @@ struct PasswordField:View {
                         TextField("", text: $password)
                             .placeholder(when: password.isEmpty) {
                                 Text("Password")
-                                    .foregroundColor(Color.custom(._FFFFFF).opacity(0.15))
+                                    .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
                                     .font(.custom("Roboto-Regular", size: 14))
                             }
                         
@@ -39,7 +39,7 @@ struct PasswordField:View {
                         SecureField("", text: $password)
                             .placeholder(when: password.isEmpty) {
                                 Text("* * * * * * *")
-                                    .foregroundColor(Color.custom(._FFFFFF).opacity(0.15))
+                                    .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
                                     .font(.custom("Roboto-Regular", size: 14))
                                     .padding(.top, 5)
                                 

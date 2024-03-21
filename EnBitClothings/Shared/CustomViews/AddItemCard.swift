@@ -19,9 +19,11 @@ struct AddItemCard:View {
             if cart?.images?.url != "" {
                 WebImage(url: URL(string: cart?.images?.url ?? ""))
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 100,height: 100)
-                    .padding(12)
+//                    .scaledToFit()
+                    .cornerRadius(8)
+                    .padding(.horizontal, 8)
+                    .frame(height: 100)
+                    .padding(.vertical, 8)
 
             } else {
                 Image("Cloth_Placeholder")
@@ -41,8 +43,6 @@ struct AddItemCard:View {
                     .padding(.trailing, 39)
                     .frame(maxWidth:.infinity,alignment: .leading)
                     
-                    
-                    
                     Button {
                         action()
                     } label: {
@@ -53,7 +53,7 @@ struct AddItemCard:View {
                 }
                 Text("\(cart?.category?.category ?? "N/A")")
                     .font(.customFont(.RobotoMedium, 12))
-                    .foregroundColor(Color.custom(._B4B4B4))
+                    .foregroundColor(Color.custom(._E9E9E9))
                     .frame(width: 100,height: 20,alignment: .leading)
 
                 HStack {
@@ -67,9 +67,9 @@ struct AddItemCard:View {
             
             
         } // : HStack
-        .background(Color.custom(._FFFFFF).opacity(0.13))
+        .background(Color.custom(._FFFFFF).opacity(0.2))
         .cornerRadius(10)
-        .border(Color.black)
+        .shadow(color: Color.custom(._F9F9F9),radius: 9, x: 0, y: 3)
     }
     
 }

@@ -26,16 +26,11 @@ struct DatePickerField: View {
                 .foregroundColor(Color.custom(._FFFFFF))
                 .padding(.bottom, 6)
             HStack(spacing:0) {
-                //TextField("", text: $textDate)
                 TextField("",text: $textDate,prompt: Text((textFieldName))
                     .font(.customFont(.RobotoRegular, 14))
-                    .foregroundColor(Color.custom(._FFFFFF))
+                    .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
                 )
                     .disabled(true)
-//                    .placeholder(when: textDate.isEmpty) {
-//                        Text("YYYY/MM/DD")
-//                            .font(.customFont(.RobotoRegular, 14))
-//                            .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
 //                    }
                 Spacer()
                 Image("icon.calendarMonth")

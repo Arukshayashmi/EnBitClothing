@@ -20,7 +20,7 @@ struct CardDetailField: View {
                 .scaledToFit()
                 .frame(height: 20)
                 .padding(.trailing, 21)
-            TextField("Card Number", text: $cardNumber)
+            TextField("", text: $cardNumber)
             .placeholder(when: cardNumber.isEmpty) {
                     Text("1234 5674 3456 2345")
                         .font(.custom("Roboto-Regular", size: 14))
@@ -56,7 +56,7 @@ struct CardDetailField: View {
                 .placeholder(when: expirationDate.isEmpty) {
                     Text("MM/YY")
                         .font(.custom("Roboto-Regular", size: 14))
-                        .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
+                        .foregroundColor(Color.custom(._FFFFFF))
                 }
                 .focused($keyboardActive)
                 .frame(width: 55)
@@ -78,7 +78,7 @@ struct CardDetailField: View {
                 .placeholder(when: cvv.isEmpty) {
                     Text("CVV")
                         .font(.custom("Roboto-Regular", size: 14))
-                        .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
+                        .foregroundColor(Color.custom(._FFFFFF))
                 }
                 .focused($keyboardActive)
                 .onChange(of: cvv) { newValue in
@@ -94,7 +94,7 @@ struct CardDetailField: View {
         .padding(.vertical, 12)
         .padding(.leading, 16)
         .padding(.trailing, 9)
-        .background(Color.custom(._FFFFFF).opacity(0.13))
+        .background(Color.custom(._FFFFFF).opacity(0.2))
         .cornerRadius(10)
         .font(.customFont(.RobotoRegular, 14))
         //.frame(height: 100)

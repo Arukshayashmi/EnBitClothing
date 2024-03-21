@@ -20,7 +20,7 @@ struct MultiLineInputTextField: View {
                 if text.isEmpty {
                     Text(placeHolder) 
                         .font(.system(size: 16))
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color.custom(._FFFFFF).opacity(0.5))
                         .padding(.horizontal, 16)
                         .padding(.top, 16)
                         .padding(.bottom, 12)

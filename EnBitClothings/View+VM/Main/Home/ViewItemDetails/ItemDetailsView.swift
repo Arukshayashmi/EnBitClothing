@@ -39,8 +39,8 @@ struct ItemDetailsView: View {
                         
                         Text(vm.clothItem?.category?.category ?? "")
                             .font(.customFont(.RobotoMedium, 12))
-                            .foregroundColor(Color.custom(._B4B4B4))
-                            .padding(.leading, 8)
+                            .foregroundColor(Color.custom(._E9E9E9))
+                            .padding(.leading, 16)
                             .padding(.top, 5)
                         
                         Text(vm.clothItem?.name ?? "")
@@ -83,7 +83,7 @@ struct ItemDetailsView: View {
                         
                     } // : VStack Item detail card
 //                    .frame(height: 450)
-                    .background(Color.custom(._FFFFFF).opacity(0.13))
+                    .background(Color.custom(._FFFFFF).opacity(0.2))
                     .cornerRadius(14)
                     
                 ScrollView(showsIndicators: false) {
@@ -94,7 +94,7 @@ struct ItemDetailsView: View {
                         Text(vm.clothItem?.description ?? "")
                             .font(.customFont(.RobotoRegular, 12))
                             .padding(.bottom, 10)
-                            .foregroundColor(Color.custom(._B4B4B4))
+                            .foregroundColor(Color.custom(._E9E9E9))
                     } // : VStack
                     .padding(.top, 16)
                 } // : Scroll view

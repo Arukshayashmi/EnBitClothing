@@ -24,11 +24,11 @@ struct CategoryButton: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 5)
                     .font(.customFont(.RobotoMedium, 14))
-                    .foregroundColor(Color.custom(._E2E2E2))
+                    .foregroundColor(Color.custom(._FFFFFF))
                     .background(
                         RoundedRectangle(cornerRadius: 27)
                             .strokeBorder(Color.custom(._6347F3), lineWidth: 1)
-                            .background(categoryId == selectedCategoryId ? Color.custom(._6347F3) : Color.custom(._FFFFFF).opacity(0.13))
+                            .background(categoryId == selectedCategoryId ? Color.custom(._6347F3) : Color.custom(._FFFFFF).opacity(0.2))
                     )
                     .cornerRadius(27)
             }

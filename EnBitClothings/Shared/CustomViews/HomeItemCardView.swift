@@ -75,7 +75,7 @@ struct HomeItemCardView:View {
             
             Text(itemCard?.category?.category ?? "")
                 .font(.customFont(.RobotoMedium, 12))
-                .foregroundColor(Color.custom(._B4B4B4))
+                .foregroundColor(Color.custom(._E9E9E9))
                 .padding(.leading, 8)
                 .padding(.top, 5)
 
@@ -88,7 +88,7 @@ struct HomeItemCardView:View {
                 .padding(.top, 1)
                 .padding(.bottom, 10)
         } // : VStack
-        .background(Color.custom(._FFFFFF).opacity(0.13))
+        .background(Color.custom(._FFFFFF).opacity(0.2))
         .cornerRadius(14)
         .frame(height: 234)
         .padding(.bottom, 5)

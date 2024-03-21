@@ -1132,7 +1132,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EnBitClothings/Preview Content\"";
-				DEVELOPMENT_TEAM = 5R23NM6B64;
+				DEVELOPMENT_TEAM = 5S2USGV52L;
 				ENABLE_PREVIEWS = YES;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					AlamofireDynamic.framework,
@@ -1156,7 +1156,7 @@
 					AlamofireDynamic.framework,
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "dilshan-dev.EnBitClothings";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.EnBitClothings;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1178,7 +1178,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EnBitClothings/Preview Content\"";
-				DEVELOPMENT_TEAM = 5R23NM6B64;
+				DEVELOPMENT_TEAM = 5S2USGV52L;
 				ENABLE_PREVIEWS = YES;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"PhoneNumberKit-Dynamic.framework",
@@ -1202,7 +1202,7 @@
 					AlamofireDynamic.framework,
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "dilshan-dev.EnBitClothings";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.EnBitClothings;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

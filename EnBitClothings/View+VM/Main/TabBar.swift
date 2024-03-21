@@ -119,7 +119,7 @@ private struct TabBar: View {
         .padding(.bottom, 38)
         //.padding(.horizontal, 22)
         .frame(width: UIScreen.screenWidth)
-        .background(Color.custom(._1B1B24))
+        .background(Color.custom(._333333))
     }
 }
 
@@ -142,7 +142,7 @@ private struct TabBarButton: View {
                 Text(title)
                     .font(.customFont(.RobotoMedium, 10))
             }//:VStack
-            .foregroundColor(vm.selectedTab == item ? .custom(._FFFFFF) : .custom(._FFFFFF).opacity(0.40))
+            .foregroundColor(vm.selectedTab == item ? .custom(._FFFFFF) : .custom(._FFFFFF).opacity(0.3))
         } else {
             Image(image)
                 .resizable()
